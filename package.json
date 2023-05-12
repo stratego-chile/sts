@@ -24,6 +24,7 @@
     "@stdlib/string": "^0.0.14",
     "@swind/schema": "^1.0.10",
     "@tailwindcss/forms": "^0.5.3",
+    "@vercel/analytics": "^1.0.1",
     "antd": "^5.4.7",
     "antd-img-crop": "^4.12.2",
     "chart.js": "^4.3.0",
