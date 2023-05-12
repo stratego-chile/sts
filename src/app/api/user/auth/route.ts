@@ -45,12 +45,7 @@ export const POST = async (request: NextRequest) => {
   )
 
   if (!authorized)
-    return NextResponse.json(result, {
-      status: StatusCodes.UNAUTHORIZED,
-      headers: {
-        'Error-Reason': JSON.stringify(credentials),
-      },
-    })
+    return NextResponse.json(result, { status: StatusCodes.UNAUTHORIZED })
 
   const user = await Users.getUserByEmail(credentials.email)
 
