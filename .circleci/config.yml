@@ -1,0 +1,33 @@
+version: 2.1
+orbs:
+  node:
+    executors:
+      default:
+        docker:
+          - image: cimg/node:20.1.0
+    commands:
+      install:
+        description: "Install PNPM and repo dependencies"
+        steps:
+          - run:
+              name: Install PNPM
+              command: npm install -g pnpm
+          - run:
+              name: Install dependencies
+              command: pnpm install
+jobs:
+  test:
+    executor: node/default
+    description: "Run tests"
+    steps:
+      - checkout
+      - run:
+          name: Install local dependencies
+          command: pnpm install
+      - run:
+          name: Check linting
+          command: pnpm lint
+workflows:
+  test:
+    jobs:
+      - test
