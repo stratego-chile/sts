@@ -1,0 +1,11 @@
+* text=auto
+* text encoding=utf-8
+* text eol=lf
+*.png binary
+*.ico binary
+*.zip binary
+
+# GitHub Linguist Override
+*.cjs linguist-vendored
+*.config.js linguist-vendored
+*.scss linguist-language=Sass

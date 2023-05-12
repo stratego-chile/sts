@@ -1,0 +1,49 @@
+version: "0.2"
+language: en, es
+files:
+  - /**/*.{tsx,ts,json}
+ignorePaths:
+  - /**/*.cert
+  - package.json
+  - /**/*.config.{js,json,yaml,yml,toml}
+  - /**/*lock.{json,yaml,yml}
+  - /**/*.xml
+dictionaryDefinitions:
+  - name: spanish
+    path: ./node_modules/@cspell/dict-es-es/Spanish.trie.gz
+dictionaries:
+  - spanish
+  - companies
+  - softwareTerms
+  - fonts
+  - npm
+words:
+  - antd
+  - BSON
+  - camelcase
+  - capath
+  - chartjs
+  - darch
+  - desaturate
+  - devcert
+  - endregion
+  - esnext
+  - formik
+  - Formik
+  - headlessui
+  - heroicons
+  - indianred
+  - isplainobject
+  - lightgray
+  - mediumseagreen
+  - msapplication
+  - popperjs
+  - recaptcha
+  - royalblue
+  - stratego
+  - swind
+  - tailwindcss
+  - trojan
+  - unmarshall
+  - volta
+  - wysiwyg
