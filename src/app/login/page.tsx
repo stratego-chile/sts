@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
 const CredentialsForm = dynamic(
   () => import('@stratego-sts/components/login/credentials-form')
@@ -12,7 +13,9 @@ const Login = () => {
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign in to your Stratego STS account
           </h2>
-          <CredentialsForm />
+          <Suspense>
+            <CredentialsForm />
+          </Suspense>
         </div>
       </div>
     </div>

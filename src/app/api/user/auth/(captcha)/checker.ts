@@ -10,6 +10,7 @@ export const checkCaptchaToken = async (token: string) => {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: 'application/json; charset=utf-8',
     },
+    cache: 'no-cache',
   })
 
   const data: {

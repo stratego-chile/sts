@@ -55,17 +55,13 @@ export const getStoreData = () => {
 export const checkSession = async ($cookies: ReturnType<typeof cookies>) => {
   const cookie = await getSessionCookie($cookies)
 
-  if (!cookie) return null
-
-  if (cookie?.__cookieConfig?.expires)
-    if (
-      differenceInSeconds(
-        new Date(),
-        new Date(cookie?.__cookieConfig?.expires)
-      ) <= 300 // 5 minutes
-    ) {
-      return null
-    }
+  if (
+    !cookie ||
+    (cookie?.__cookieConfig?.expires &&
+      differenceInSeconds(new Date(cookie.__cookieConfig.expires), new Date()) <
+        300) // Expiring in less than 5 minutes
+  )
+    return null
 
   return cookie
 }

@@ -1,9 +1,13 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, type MongoClientOptions } from 'mongodb'
 
 const uri = process.env.MONGODB_URI
-const options = {}
+
+const options: MongoClientOptions = {
+  rejectUnauthorized: true,
+}
 
 let mongoClient!: MongoClient
+
 let clientPromise!: Promise<MongoClient>
 
 if (!process.env.MONGODB_URI) {

@@ -5,14 +5,8 @@ export class Connector {
    * @server-side-only
    */
   static async connect() {
-    try {
-      const mongoClient = await mongoConnector
+    const client = (await mongoConnector).db(process.env.MONGODB_NAME)
 
-      return mongoClient.db(process.env.MONGODB_NAME)
-    } catch (error) {
-      console.error(error)
-
-      return undefined
-    }
+    return client
   }
 }
