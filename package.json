@@ -20,7 +20,7 @@
     "@ant-design/icons": "^5.0.1",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
-    "@lexical/react": "^0.10.0",
+    "@lexical/react": "^0.11.0",
     "@stdlib/string": "^0.0.14",
     "@swind/schema": "^1.0.10",
     "@tailwindcss/forms": "^0.5.3",
