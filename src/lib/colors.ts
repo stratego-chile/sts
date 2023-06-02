@@ -1,4 +1,4 @@
-import { ProjectStatus, TicketStatus } from '@stratego-sts/lib/enumerators'
+import { ProjectStatus, TicketStatus } from '@/lib/enumerators'
 import chroma from 'chroma-js'
 import type { CSSProperties } from 'react'
 
@@ -11,8 +11,9 @@ export const getMonoContrast = (color: string): MonochromeColorLabel =>
 
 export const coloredBoxStyles = (
   color?: string
-): Pick<CSSProperties, 'backgroundColor' & 'color'> => {
+): Pick<CSSProperties, Extend<'backgroundColor', 'color'>> => {
   const definitiveColor = color ?? chroma.random().hex()
+
   return {
     backgroundColor: definitiveColor,
     color: getMonoContrast(definitiveColor),

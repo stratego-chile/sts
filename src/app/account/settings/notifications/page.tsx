@@ -1,8 +1,14 @@
-import { SettingId } from '@stratego-sts/lib/enumerators'
-import { checkSession } from '@stratego-sts/lib/session'
-import { Users } from '@stratego-sts/models/users'
-import { TUserNotifications } from '@stratego-sts/schemas/user'
+import Loading from '@/app/account/loading'
+import { checkSession } from '@/lib/session'
+import { Users } from '@/models/users'
+import { TUserNotifications } from '@/schemas/user'
+import dynamic from 'next/dynamic'
 import { cookies } from 'next/headers'
+import { Suspense } from 'react'
+
+const NotificationsForm = dynamic(
+  () => import('@/components/settings/notifications-form')
+)
 
 const getUserNotificationSettings = async (): Promise<
   Unset<TUserNotifications>
@@ -23,12 +29,13 @@ const NotificationSettingsPage = async () => {
 
   return (
     <section className="flex flex-col flex-grow w-full gap-4">
-      <span>{SettingId.Notifications}</span>
-      <pre>
-        <code>
-          {JSON.stringify(Object.keys(userNotificationSettings), null, 2)}
-        </code>
-      </pre>
+      <span>Receive notifications by:</span>
+
+      {userNotificationSettings && (
+        <Suspense fallback={<Loading />}>
+          <NotificationsForm notificationsSettings={userNotificationSettings} />
+        </Suspense>
+      )}
     </section>
   )
 }

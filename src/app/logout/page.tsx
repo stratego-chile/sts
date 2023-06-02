@@ -1,6 +1,6 @@
-import { getSessionCookie } from '@stratego-sts/lib/session'
+import { getSessionCookie } from '@/lib/session'
 import { cookies } from 'next/headers'
-import ClientLogout from './(client)/logout'
+import ClientLogout from '@/app/logout/(client)/logout'
 
 const ServerLogout = async () => {
   const { __cookieConfig: cookieConfig, ...user } =

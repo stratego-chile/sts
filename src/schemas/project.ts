@@ -1,6 +1,6 @@
-import { ProjectStatus } from '@stratego-sts/lib/enumerators'
-import { ticketSchema } from '@stratego-sts/schemas/ticket'
-import { createSchema, type Infer } from '@swind/schema'
+import { ProjectStatus } from '@/lib/enumerators'
+import { ticketSchema } from '@/schemas/ticket'
+import { createSchema, type Infer } from 'solarwind'
 
 const projectIconSchema = createSchema({
   url: 'string?',
@@ -33,4 +33,10 @@ export const projectSchema = createSchema({
   updatedAt: 'int',
 } as const)
 
-export type TProject = Infer<typeof projectSchema>
+export type TProject = Extend<
+  Omit<Infer<typeof projectSchema>, 'id' | 'ownerId'>,
+  {
+    id: Stratego.STS.Utils.UUID
+    ownerId: Stratego.STS.Utils.UUID
+  }
+>

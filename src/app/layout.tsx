@@ -1,9 +1,10 @@
-import '@stratego-sts/styles/global.sass'
+import '@/styles/global.sass'
 
+import Analytics from '@/app/analytics'
 import dynamic from 'next/dynamic'
 
 const DefaultFooter = dynamic(
-  () => import('@stratego-sts/components/layout/default-footer')
+  () => import('@/components/layout/default-footer')
 )
 
 export const generateMetadata = () => {
@@ -34,13 +35,14 @@ const RootLayout = ({ children }: React.PropsWithChildren<WithoutProps>) => {
           sizes="16x16"
           href="/favicon-16x16.png"
         />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="msapplication-TileColor" content="#212529" />
         <meta name="theme-color" content="#212529" />
       </head>
       <body className="h-full flex flex-col">
         <main className="flex flex-col flex-grow">{children}</main>
         <DefaultFooter />
+        <Analytics />
       </body>
     </html>
   )

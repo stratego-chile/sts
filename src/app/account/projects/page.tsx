@@ -1,35 +1,36 @@
 'use client'
 
-import Spinner from '@stratego-sts/components/misc/spinner'
-import { ProjectStatus } from '@stratego-sts/lib/enumerators'
-import { fetcher } from '@stratego-sts/lib/fetcher'
-import type { TProject } from '@stratego-sts/schemas/project'
+import Loading from '@/app/account/loading'
+import { ProjectStatus } from '@/lib/enumerators'
+import { fetcher } from '@/lib/fetcher'
+import type { TProject } from '@/schemas/project'
 import classNames from 'classnames'
 import dynamic from 'next/dynamic'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
-const Paginator = dynamic(
-  () => import('@stratego-sts/components/misc/paginator')
-)
+const Paginator = dynamic(() => import('@/components/misc/paginator'))
 
 const StatusListSelect = dynamic(
-  () => import('@stratego-sts/components/misc/status-list-select')
+  () => import('@/components/misc/status-list-select')
 )
 
 const ProjectOverviewCard = dynamic(
-  () => import('@stratego-sts/components/projects/overview-card')
+  () => import('@/components/projects/overview-card')
 )
 
 const ProjectsPage = () => {
+  const router = useRouter()
+
   const searchParams = useSearchParams()
 
   const status = useMemo(() => searchParams.get('status'), [searchParams])
 
-  const { data: rawProjects = [], isLoading: isFetchingProjects } = useSWR<
-    Array<TProject>
-  >(`/api/projects`, fetcher)
+  const { data: rawProjects = [], isLoading } = useSWR<Array<TProject>>(
+    `/api/projects`,
+    fetcher
+  )
 
   const projects = useMemo(
     () =>
@@ -41,7 +42,7 @@ const ProjectsPage = () => {
 
   return (
     <div className="flex flex-col flex-grow">
-      <header className="bg-white border-b-[1px] border-b-gray-200">
+      <header className="bg-white border-b border-b-gray-200">
         <div className="flex flex-col gap-4 mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <span className="flex flex-col md:flex-row justify-between gap-y-5">
             <span className="flex flex-col lg:flex-row lg:items-center">
@@ -59,7 +60,7 @@ const ProjectsPage = () => {
 
       <main
         className={classNames(
-          isFetchingProjects ? 'flex flex-col flex-grow' : 'grid w-full',
+          isLoading ? 'flex flex-col flex-grow' : 'grid w-full',
           'mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'
         )}
       >
@@ -69,8 +70,8 @@ const ProjectsPage = () => {
           paginationClassName="mt-5"
           placeholder={
             <span className="flex flex-col flex-grow justify-items-center justify-center align-middle gap-1">
-              {isFetchingProjects ? (
-                <Spinner />
+              {isLoading ? (
+                <Loading />
               ) : (
                 <span>
                   No {status && <strong>{status}</strong>} projects found
@@ -79,7 +80,13 @@ const ProjectsPage = () => {
             </span>
           }
           items={projects.map((project, key) => (
-            <ProjectOverviewCard key={key} project={project} />
+            <ProjectOverviewCard
+              key={key}
+              project={project}
+              onClick={(projectId) =>
+                router.push(`/account/projects/${projectId}`)
+              }
+            />
           ))}
           itemsPerPage={5}
         />

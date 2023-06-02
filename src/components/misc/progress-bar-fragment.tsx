@@ -10,19 +10,22 @@ type ProgressBarFragmentType = GenericExtract<
   'a' | 'button' | 'div'
 >
 
-type ProgressBarFragmentProps<T extends ProgressBarFragmentType> = {
-  label?: string
-  ratio?: number
-  color?: string
-  type?: T
-} & (T extends 'a'
-  ? { href?: string; onClick?: never }
-  : T extends 'button'
-  ? { onClick?: () => void; href?: never }
-  : {
-      href?: never
-      onClick?: never
-    })
+type ProgressBarFragmentProps<T extends ProgressBarFragmentType> = Extend<
+  {
+    label?: string
+    ratio?: number
+    color?: string
+    type?: T
+  },
+  T extends 'a'
+    ? { href?: string; onClick?: never }
+    : T extends 'button'
+    ? { onClick?: () => void; href?: never }
+    : {
+        href?: never
+        onClick?: never
+      }
+>
 
 const ProgressBarFragment = <T extends ProgressBarFragmentType>({
   type: fragmentType,

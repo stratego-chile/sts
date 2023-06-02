@@ -2,23 +2,38 @@
 
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import {
-  Bars3Icon,
-  Cog6ToothIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import capitalize from '@stdlib/string/capitalize'
 import {
-  navigationLinks,
+  clientNavigationLinks,
+  adminNavigationLinks,
   settingsLinks,
   settingsQuickActions,
-} from '@stratego-sts/helpers/navigation-links'
+} from '@/helpers/navigation-links'
+import { AccountRole, IconType } from '@/lib/enumerators'
+import { fetcher } from '@/lib/fetcher'
+import type { TUser, TUserProfile } from '@/schemas/user'
 import classNames from 'classnames'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment, useState } from 'react'
+import useSWR from 'swr'
 
-const AccountHeader: React.FC<WithoutProps> = () => {
+const UserIcon = dynamic(() => import('@/components/user/icon'))
+
+const Cog6ToothIcon = dynamic(() =>
+  import('@heroicons/react/24/outline').then((mod) => mod.Cog6ToothIcon)
+)
+
+const SessionHeader: React.FC<WithoutProps> = () => {
+  const { data: profile } = useSWR<TUserProfile>(
+    '/api/session/user/profile',
+    fetcher
+  )
+
+  const { data: user } = useSWR<TUser>('/api/session/user', fetcher)
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -29,11 +44,19 @@ const AccountHeader: React.FC<WithoutProps> = () => {
           aria-label="Global"
         >
           <div className="flex">
-            <Link href="/account" className="-m-1.5 p-1.5">
+            <Link
+              href={
+                user?.role &&
+                [AccountRole.Admin, AccountRole.Auditor].includes(user.role)
+                  ? '/admin'
+                  : '/account'
+              }
+              className="-m-1.5 p-1.5"
+            >
               <span className="sr-only">{process.env.BRAND_NAME}</span>
               <Image
                 className="h-8 w-auto"
-                src="/vectors/brand-logo.svg"
+                src="/images/brand/logo.svg"
                 height={48}
                 width={48}
                 alt={process.env.BRAND_NAME}
@@ -53,7 +76,12 @@ const AccountHeader: React.FC<WithoutProps> = () => {
           </div>
 
           <div className="hidden lg:flex lg:gap-x-10">
-            {navigationLinks.map((item, key) => (
+            {(user?.role
+              ? [AccountRole.Admin, AccountRole.Auditor].includes(user.role)
+                ? adminNavigationLinks
+                : clientNavigationLinks
+              : []
+            ).map((item, key) => (
               <Link
                 key={key}
                 href={item.href}
@@ -66,11 +94,20 @@ const AccountHeader: React.FC<WithoutProps> = () => {
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Popover className="relative">
-              <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900">
-                <Cog6ToothIcon
-                  className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
-                  aria-hidden="true"
-                />
+              <Popover.Button className="flex items-center text-sm outline-none font-semibold leading-6 text-gray-900">
+                {profile?.icon?.prefer !== IconType.None && profile?.icon ? (
+                  <UserIcon
+                    icon={profile.icon}
+                    size={38}
+                    sizeUnit="px"
+                    userInitialLetter={profile?.firstName}
+                  />
+                ) : (
+                  <Cog6ToothIcon
+                    className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                    aria-hidden="true"
+                  />
+                )}
 
                 <ChevronDownIcon
                   className="h-5 w-5 flex-none text-gray-400"
@@ -167,7 +204,7 @@ const AccountHeader: React.FC<WithoutProps> = () => {
 
                 <Image
                   className="h-8 w-auto"
-                  src="/vectors/brand-logo.svg"
+                  src="/images/brand/logo.svg"
                   height={48}
                   width={48}
                   alt={process.env.BRAND_NAME}
@@ -188,13 +225,13 @@ const AccountHeader: React.FC<WithoutProps> = () => {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  {navigationLinks.map((item, key) => (
+                  {clientNavigationLinks.map((item, key) => (
                     <Link
                       key={key}
                       href={item.href}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
-                      {item.name}
+                      {capitalize(item.name)}
                     </Link>
                   ))}
                 </div>
@@ -215,14 +252,14 @@ const AccountHeader: React.FC<WithoutProps> = () => {
                         </Disclosure.Button>
                         <Disclosure.Panel className="mt-2 space-y-2">
                           {[...settingsLinks, ...settingsQuickActions].map(
-                            (item) => (
+                            (item, key) => (
                               <Disclosure.Button
-                                key={item.name}
+                                key={key}
                                 as="a"
                                 href={item.href}
                                 className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                               >
-                                {item.name}
+                                {capitalize(item.name)}
                               </Disclosure.Button>
                             )
                           )}
@@ -240,4 +277,4 @@ const AccountHeader: React.FC<WithoutProps> = () => {
   )
 }
 
-export default AccountHeader
+export default SessionHeader

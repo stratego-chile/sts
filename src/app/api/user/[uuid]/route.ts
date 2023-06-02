@@ -1,6 +1,6 @@
-import { AccountRole, AccountStatus } from '@stratego-sts/lib/enumerators'
-import { checkSession } from '@stratego-sts/lib/session'
-import { Users } from '@stratego-sts/models/users'
+import { AccountRole, AccountStatus } from '@/lib/enumerators'
+import { checkSession } from '@/lib/session'
+import { Users } from '@/models/users'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -23,12 +23,12 @@ export const GET = async (
     ) ||
     ![AccountStatus.Inactive].includes(user.status as AccountStatus)
   )
-    return NextResponse.json(undefined, { status: StatusCodes.UNAUTHORIZED })
+    return NextResponse.json(null, { status: StatusCodes.UNAUTHORIZED })
 
   const foundUser = await Users.getUserById(params.uuid)
 
   if (!foundUser)
-    return NextResponse.json(undefined, { status: StatusCodes.NOT_FOUND })
+    return NextResponse.json(null, { status: StatusCodes.NOT_FOUND })
 
   return NextResponse.json(foundUser)
 }

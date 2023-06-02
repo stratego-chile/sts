@@ -3,49 +3,55 @@ import dynamic from 'next/dynamic'
 import { useCallback, useMemo } from 'react'
 
 const ProgressBarFragment = dynamic(
-  () => import('@stratego-sts/components/misc/progress-bar-fragment')
+  () => import('@/components/misc/progress-bar-fragment')
 )
 
 export type RewriteMode = 'path' | 'query'
 
-export type LinkConfig<S extends RewriteMode> = {
-  rewriteMode?: S
-  pathTemplate?: string
-} & (S extends 'path'
-  ? {
-      /**
-       * @default ':search'
-       */
-      paramName?: `:${string}`
-      queryParamName?: never
-    }
-  : {
-      /**
-       * @default 'search'
-       */
-      queryParamName?: S extends 'query' ? string : undefined | never
-      paramName?: never
-    })
+export type LinkConfig<S extends RewriteMode> = Extend<
+  {
+    rewriteMode?: S
+    pathTemplate?: string
+  },
+  S extends 'path'
+    ? {
+        /**
+         * @default ':search'
+         */
+        paramName?: `:${string}`
+        queryParamName?: never
+      }
+    : {
+        /**
+         * @default 'search'
+         */
+        queryParamName?: S extends 'query' ? string : undefined | never
+        paramName?: never
+      }
+>
 
 export type ProgressBarProps<
   Keys extends keyof T,
   T extends Record<Keys, number>,
   AsLink extends boolean,
   LinkUsage extends RewriteMode
-> = {
-  stats?: T
-  colors?: Record<Keys, string>
-  customTotal?: number
-  asLink?: AsLink
-} & (AsLink extends true
-  ? {
-      linkConfig: LinkConfig<LinkUsage>
-      onStatClick?: never
-    }
-  : {
-      linkConfig?: never
-      onStatClick?: (stat: keyof T) => void
-    })
+> = Extend<
+  {
+    stats?: T
+    colors?: Record<Keys, string>
+    customTotal?: number
+    asLink?: AsLink
+  },
+  AsLink extends true
+    ? {
+        linkConfig: LinkConfig<LinkUsage>
+        onStatClick?: never
+      }
+    : {
+        linkConfig?: never
+        onStatClick?: (stat: keyof T) => void
+      }
+>
 
 const ProgressBar = <
   Keys extends string,

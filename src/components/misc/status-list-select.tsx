@@ -1,7 +1,7 @@
 'use client'
 
+import type { ProjectStatus, TicketStatus } from '@/lib/enumerators'
 import capitalize from '@stdlib/string/capitalize'
-import type { ProjectStatus, TicketStatus } from '@stratego-sts/lib/enumerators'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 

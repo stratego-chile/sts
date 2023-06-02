@@ -1,3 +1,4 @@
+import { AccountRole, AccountStatus } from '@/lib/enumerators'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 import { IronSessionOptions, sealData, unsealData } from 'iron-session'
 import { cookies } from 'next/headers'
@@ -6,9 +7,12 @@ import { cookies } from 'next/headers'
  * @server-side-only
  */
 export const createSealedCookieData = async (
-  data: Stratego.STS.User.CookieData & {
-    __cookieConfig?: IronSessionOptions['cookieOptions']
-  }
+  data: Extend<
+    Stratego.STS.User.CookieData,
+    {
+      __cookieConfig?: IronSessionOptions['cookieOptions']
+    }
+  >
 ) =>
   await sealData(
     { data },
@@ -22,12 +26,12 @@ export const createSealedCookieData = async (
  */
 export const getSessionCookie = async (
   $cookies: ReturnType<typeof cookies>
-): Promise<
-  | (Stratego.STS.User.CookieData & {
-      __cookieConfig?: IronSessionOptions['cookieOptions']
-    })
-  | null
-> => {
+): Promise<Extend<
+  Stratego.STS.User.CookieData,
+  {
+    __cookieConfig?: IronSessionOptions['cookieOptions']
+  }
+> | null> => {
   const found = $cookies.get(process.env.SESSION_COOKIE_NAME)
 
   if (!found) return null
@@ -36,9 +40,12 @@ export const getSessionCookie = async (
     password: process.env.SESSION_COOKIE_PASSWORD,
   })
 
-  return unsealedData.data as Stratego.STS.User.CookieData & {
-    __cookieConfig?: IronSessionOptions['cookieOptions']
-  }
+  return unsealedData.data as Extend<
+    Stratego.STS.User.CookieData,
+    {
+      __cookieConfig?: IronSessionOptions['cookieOptions']
+    }
+  >
 }
 
 export const getStoreData = () => {
@@ -52,23 +59,32 @@ export const getStoreData = () => {
 /**
  * @server-side-only
  */
-export const checkSession = async ($cookies: ReturnType<typeof cookies>) => {
+export const checkSession = async (
+  $cookies: ReturnType<typeof cookies>,
+  allowedRoles: Array<AccountRole> = []
+) => {
   const cookie = await getSessionCookie($cookies)
 
-  if (!cookie) return null
+  if (
+    !cookie ||
+    cookie.status === AccountStatus.Inactive ||
+    (cookie?.__cookieConfig?.expires &&
+      differenceInSeconds(new Date(cookie.__cookieConfig.expires), new Date()) <
+        300) // Expiring in less than 5 minutes
+  )
+    return null
 
-  if (cookie?.__cookieConfig?.expires)
-    if (
-      differenceInSeconds(
-        new Date(),
-        new Date(cookie?.__cookieConfig?.expires)
-      ) <= 300 // 5 minutes
-    ) {
-      return null
-    }
+  if (allowedRoles.length > 0 && !allowedRoles.includes(cookie.role))
+    return null
 
   return cookie
 }
+
+/**
+ * @server-side-only
+ */
+export const checkAdminSession = async ($cookies: ReturnType<typeof cookies>) =>
+  await checkSession($cookies, [AccountRole.Admin])
 
 export const setStoreData = (data: Stratego.STS.User.StoreData) =>
   localStorage.setItem(process.env.SESSION_STORE_KEY, JSON.stringify(data))

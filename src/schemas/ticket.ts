@@ -1,6 +1,6 @@
-import { TicketStatus } from '@stratego-sts/lib/enumerators'
-import { createSchema, type Infer } from '@swind/schema'
+import { TicketStatus } from '@/lib/enumerators'
 import type { SerializedEditorState, SerializedLexicalNode } from 'lexical'
+import { createSchema, type Infer } from 'solarwind'
 
 export const ticketDescriptorSchema = createSchema({
   title: 'string',
@@ -17,7 +17,7 @@ export const ticketDescriptorSchema = createSchema({
 export type TTicketDescriptor = Infer<typeof ticketDescriptorSchema>
 
 export const ticketCommentSchema = createSchema({
-  id: 'string',
+  id: 'ID',
   content: 'record?',
   author: 'string',
   /**
@@ -29,7 +29,7 @@ export const ticketCommentSchema = createSchema({
 export type TTicketComment = Infer<typeof ticketCommentSchema>
 
 export const ticketSchema = createSchema({
-  id: 'string',
+  id: 'ID',
   versions: {
     type: ticketDescriptorSchema,
     list: true,
@@ -42,15 +42,24 @@ export const ticketSchema = createSchema({
 
 export type TTicket<
   T extends Infer<typeof ticketSchema> = Infer<typeof ticketSchema>
-> = Omit<T, 'versions' | 'comments'> & {
-  versions: Array<
-    Omit<TTicketDescriptor, 'description'> & {
-      description?: SerializedEditorState<SerializedLexicalNode>
-    }
-  >
-  comments: Array<
-    Omit<TTicketComment, 'content'> & {
-      content?: SerializedEditorState<SerializedLexicalNode>
-    }
-  >
-}
+> = Extend<
+  Omit<T, 'versions' | 'comments'>,
+  {
+    versions: Array<
+      Extend<
+        Omit<TTicketDescriptor, 'description'>,
+        {
+          description?: SerializedEditorState<SerializedLexicalNode>
+        }
+      >
+    >
+    comments: Array<
+      Extend<
+        Omit<TTicketComment, 'content'>,
+        {
+          content?: SerializedEditorState<SerializedLexicalNode>
+        }
+      >
+    >
+  }
+>

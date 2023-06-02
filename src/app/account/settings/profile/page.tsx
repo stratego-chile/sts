@@ -1,36 +1,23 @@
-import { checkSession } from '@stratego-sts/lib/session'
-import { Users } from '@stratego-sts/models/users'
-import { TUserProfile } from '@stratego-sts/schemas/user'
+'use client'
+
+import Loading from '@/app/account/loading'
+import { fetcher } from '@/lib/fetcher'
+import { TUserProfile } from '@/schemas/user'
 import dynamic from 'next/dynamic'
-import { cookies } from 'next/headers'
+import { Suspense } from 'react'
+import useSWR from 'swr'
 
-const ProfileForm = dynamic(
-  () => import('@stratego-sts/components/settings/profile-form')
-)
+const ProfileForm = dynamic(() => import('@/components/settings/profile-form'))
 
-const getUserProfile = async (): Promise<
-  Unset<
-    TUserProfile & {
-      email: string
-    }
-  >
-> => {
-  const user = await checkSession(cookies())
-
-  if (!user) return undefined
-
-  const foundUser = await Users.getUserById(user.id)
-
-  if (!foundUser) return undefined
-
-  return {
-    ...foundUser.settings.profile,
-    email: foundUser.email satisfies Stratego.STS.Auth.Email,
-  }
-}
-
-const ProfileSettingsPage = async () => {
-  const userProfile = await getUserProfile()
+const ProfileSettingsPage = () => {
+  const { data: userProfile, mutate } = useSWR<
+    Extend<
+      TUserProfile,
+      {
+        email: string
+      }
+    >
+  >('/api/session/user/profile', fetcher)
 
   return (
     <section className="flex flex-col flex-grow gap-4 w-full pb-24">
@@ -39,8 +26,10 @@ const ProfileSettingsPage = async () => {
         respectful.
       </p>
 
-      {userProfile && (
-        <ProfileForm email={userProfile.email} profile={userProfile} />
+      {userProfile?.email && (
+        <Suspense fallback={<Loading />}>
+          <ProfileForm profile={userProfile} onUpdateSuccess={() => mutate()} />
+        </Suspense>
       )}
     </section>
   )

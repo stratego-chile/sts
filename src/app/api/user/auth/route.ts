@@ -1,7 +1,8 @@
-import { checkCaptchaToken } from '@stratego-sts/app/api/user/auth/(captcha)/checker'
-import { createSealedCookieData } from '@stratego-sts/lib/session'
-import { Users } from '@stratego-sts/models/users'
-import addDays from 'date-fns/addDays'
+import { checkCaptchaToken } from '@/app/api/user/auth/(captcha)/checker'
+import { IconType } from '@/lib/enumerators'
+import { createSealedCookieData } from '@/lib/session'
+import { Users } from '@/models/users'
+import addSeconds from 'date-fns/addSeconds'
 import { StatusCodes } from 'http-status-codes'
 import { IronSessionOptions, getIronSession } from 'iron-session'
 import { NextResponse, type NextRequest } from 'next/server'
@@ -22,10 +23,12 @@ export const POST = async (request: NextRequest) => {
   if (!isAuthorizedToLogin)
     return NextResponse.json(result, { status: StatusCodes.UNAUTHORIZED })
 
-  const { rememberMe, ...credentials } =
-    (await request.json()) as Unset<Stratego.STS.Auth.Credentials> & {
+  const { rememberMe, ...credentials } = (await request.json()) as Extend<
+    Unset<Stratego.STS.Auth.Credentials>,
+    {
       rememberMe?: boolean
     }
+  >
 
   if (
     !(credentials instanceof Object) &&
@@ -58,9 +61,9 @@ export const POST = async (request: NextRequest) => {
     role: user.role,
     iconType: user.settings.profile.icon
       ? user.settings.profile.icon?.url
-        ? 'url'
-        : 'color'
-      : 'none',
+        ? IconType.Image
+        : IconType.Color
+      : IconType.None,
     alias: user.settings.profile.alias,
   }
 
@@ -75,9 +78,17 @@ export const POST = async (request: NextRequest) => {
   const response = NextResponse.next()
 
   const cookieOptions: IronSessionOptions['cookieOptions'] = {
-    expires: addDays(Date.now(), rememberMe ? 14 : 1),
+    expires: addSeconds(
+      Date.now(),
+      parseInt(
+        rememberMe
+          ? process.env.SESSION_EXTENDED_TTL
+          : process.env.SESSION_DEFAULT_TTL
+      )
+    ),
     sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
+    secure:
+      process.env.SECURE === 'true' || process.env.NODE_ENV === 'production',
     path: '/',
   }
 

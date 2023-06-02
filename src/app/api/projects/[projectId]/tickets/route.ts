@@ -1,5 +1,5 @@
-import { checkSession } from '@stratego-sts/lib/session'
-import { Projects } from '@stratego-sts/models/projects'
+import { checkSession } from '@/lib/session'
+import { Projects } from '@/models/projects'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -9,7 +9,7 @@ export const GET = async (
   {
     params,
   }: {
-    params: { projectId: string }
+    params: { projectId: Stratego.STS.Utils.UUID }
   }
 ) => {
   const user = await checkSession(cookies())

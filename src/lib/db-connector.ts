@@ -1,13 +1,14 @@
-import { mongoConnector } from '@stratego-sts/lib/mongodb'
+import { mongoConnector } from '@/lib/mongodb'
 
 export class Connector {
+  /**
+   * @server-side-only
+   */
   static async connect() {
-    try {
-      const mongoClient = await mongoConnector
+    const connector = await mongoConnector
 
-      return mongoClient.db(process.env.MONGODB_NAME)
-    } catch {
-      return undefined
-    }
+    const client = connector.db(process.env.MONGODB_NAME)
+
+    return client
   }
 }
