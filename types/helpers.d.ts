@@ -12,6 +12,17 @@ declare type UnpackedArray<ExpectedArrayItem> = ExpectedArrayItem extends Array<
 >
   ? ExpectedArrayItemType
   : ExpectedArrayItem
+declare type Flatten<T> = UnpackedArray<T>
+
+/**
+ * Extends types without merging them
+ */
+declare type Extend<T, U> = U extends T ? T : T & U
+
+/**
+ * Merge two types
+ */
+declare type Merge<T, U> = T & U
 
 /**
  * Construct a type from T using keys in the union K as required properties
@@ -54,7 +65,7 @@ declare type Assumed<
   Assumption extends Original
 > = Original & Partial<Omit<Assumption, keyof Original>>
 
-declare type Assume<Base, Expected> = Expected extends Base
+declare type Assume<Base, Expected = Base> = Expected extends Base
   ? Base extends Expected
     ? Base
     : Assumed<Base, Expected>
