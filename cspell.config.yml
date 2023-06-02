@@ -1,13 +1,16 @@
 version: "0.2"
 language: en, es
 files:
-  - /**/*.{tsx,ts,json}
+  - /**/*.{tsx,ts,js,jsx,json}
 ignorePaths:
   - /**/*.cert
   - package.json
   - /**/*.config.{js,json,yaml,yml,toml}
   - /**/*lock.{json,yaml,yml}
   - /**/*.xml
+  - /**/*.{sass,scss,css}
+  - /**/*.svg
+  - /public/manifest.json
 dictionaryDefinitions:
   - name: spanish
     path: ./node_modules/@cspell/dict-es-es/Spanish.trie.gz
@@ -17,15 +20,16 @@ dictionaries:
   - softwareTerms
   - fonts
   - npm
+  - misc
 words:
   - antd
+  - atrule
   - BSON
   - camelcase
   - capath
   - chartjs
   - darch
   - desaturate
-  - devcert
   - endregion
   - esnext
   - formik
@@ -33,16 +37,21 @@ words:
   - headlessui
   - heroicons
   - indianred
+  - isequal
   - isplainobject
+  - jedec
   - lightgray
+  - listitem
   - mediumseagreen
   - msapplication
   - popperjs
   - recaptcha
   - royalblue
+  - solarwind
   - stratego
   - swind
   - tailwindcss
+  - timetravel
   - trojan
   - unmarshall
   - volta
