@@ -1,41 +1,46 @@
 'use client'
 
-import {
-  projectStatusColors,
-  ticketStatusColors,
-} from '@stratego-sts/lib/colors'
-import { fetcher } from '@stratego-sts/lib/fetcher'
+import Spinner from '@/components/misc/spinner'
+import { projectStatusColors, ticketStatusColors } from '@/lib/colors'
+import { fetcher } from '@/lib/fetcher'
 import classNames from 'classnames'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
 const NewTicketButton = dynamic(
-  () => import('@stratego-sts/components/tickets/new-ticket-button')
+  () => import('@/components/tickets/new-ticket-button')
 )
 
-const StatsCard = dynamic(
-  () => import('@stratego-sts/components/dashboard/stats-card')
-)
+const StatsCard = dynamic(() => import('@/components/dashboard/stats-card'))
 
 const TicketsByProject = dynamic(
-  () => import('@stratego-sts/components/dashboard/tickets-by-project')
+  () => import('@/components/dashboard/tickets-by-project')
 )
 
 const DashboardPage = () => {
   const router = useRouter()
 
-  const { data: stats } = useSWR<Stratego.STS.KPI.Full>('/api/stats', fetcher)
+  const { data: stats, isLoading } = useSWR<Stratego.STS.KPI.Full>(
+    '/api/stats',
+    fetcher
+  )
 
   return (
     <div>
-      <header className="bg-white border-b-[1px] border-b-gray-200">
+      <header className="bg-white border-b border-b-gray-200">
         <div className="flex flex-col gap-4 mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <span className="flex flex-col md:flex-row justify-between gap-y-5">
-            <span className="flex flex-col lg:flex-row lg:items-center">
+            <span className="flex flex-row gap-4 items-center">
               <span className="text-3xl font-bold tracking-tight text-gray-900">
                 Dashboard
               </span>
+
+              {isLoading && (
+                <span className="text-gray-400">
+                  <Spinner size={1.2} sizeUnit="rem" />
+                </span>
+              )}
             </span>
 
             <span>
@@ -92,7 +97,9 @@ const DashboardPage = () => {
             closed: ticketStatusColors.closed,
           }}
           onStatClick={(projectId, status) => {
-            router.push(`/account/projects/${projectId}?status=${status}`)
+            router.push(
+              `/account/projects/${projectId}/tickets?status=${status}`
+            )
           }}
         />
       </main>

@@ -1,7 +1,7 @@
 'use client'
 
 import capitalize from '@stdlib/string/capitalize'
-import { settingsLinks } from '@stratego-sts/helpers/navigation-links'
+import { settingsLinks } from '@/helpers/navigation-links'
 import classNames from 'classnames'
 import { usePathname, useRouter } from 'next/navigation'
 import { createElement, useMemo, type PropsWithChildren } from 'react'
@@ -18,7 +18,7 @@ const SettingsLayout = ({ children }: PropsWithChildren<WithoutProps>) => {
 
   return (
     <div className="flex flex-col flex-grow w-full">
-      <header className="bg-white border-b-[1px] border-b-gray-200">
+      <header className="bg-white border-b border-b-gray-200">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <span className="flex gap-2 items-center text-3xl font-bold tracking-tight text-gray-900">
             <span>Settings</span>

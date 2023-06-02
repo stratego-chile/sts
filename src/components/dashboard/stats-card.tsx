@@ -1,11 +1,14 @@
-import capitalize from '@stdlib/string/capitalize'
+'use client'
+
+import { StatFilter } from '@/lib/enumerators'
+import { Popover, RadioGroup, Transition } from '@headlessui/react'
+import { CheckIcon, FunnelIcon } from '@heroicons/react/24/outline'
 import camelcase from '@stdlib/string/camelcase'
+import capitalize from '@stdlib/string/capitalize'
 import { ArcElement, Chart, Tooltip, type Color } from 'chart.js'
-import { Fragment, useMemo } from 'react'
-import { Doughnut } from 'react-chartjs-2'
-import { FunnelIcon } from '@heroicons/react/24/outline'
-import { Popover, Transition } from '@headlessui/react'
 import classNames from 'classnames'
+import { Fragment, useMemo, useState } from 'react'
+import { Doughnut } from 'react-chartjs-2'
 
 Chart.register(ArcElement, Tooltip)
 
@@ -24,6 +27,8 @@ const StatsCard = <T extends Record<string, number>>({
   stats,
   onStatClick,
 }: StatsCardProps<T>) => {
+  const [filter, setFilter] = useState<StatFilter>()
+
   const total = useMemo(
     () =>
       labels
@@ -42,6 +47,7 @@ const StatsCard = <T extends Record<string, number>>({
     <div className="flex flex-col gap-6 bg-white rounded-xl shadow-md lg:shadow-xl py-3 px-6">
       <div className="flex justify-between text-gray-800">
         <h2 className="text-xl font-bold tracking-tight">{title}</h2>
+
         <Popover className="relative">
           <Popover.Button
             className={classNames(
@@ -68,24 +74,54 @@ const StatsCard = <T extends Record<string, number>>({
                 'bg-white ring-1 ring-gray-200 shadow-lg text-sm'
               )}
             >
-              <p className="font-bold whitespace-nowrap">Filter by:</p>
-              <div className="flex flex-col gap-2">
-                {['date', 'category'].map((option, key) => (
-                  <button
+              <RadioGroup
+                className="flex flex-col gap-2"
+                value={filter}
+                onChange={setFilter}
+              >
+                <RadioGroup.Label>Filter by:</RadioGroup.Label>
+                {Object.values(StatFilter).map((option, key) => (
+                  <RadioGroup.Option
                     key={key}
-                    className={classNames(
-                      'px-2 py-0.5 text-left capitalize rounded bg-gray-200 text-gray-800',
-                      'transition ease-in-out duration-200 hover:bg-gray-800 hover:text-gray-50'
-                    )}
+                    value={option}
+                    className={({ checked }) =>
+                      classNames(
+                        checked
+                          ? 'bg-blue-600 bg-opacity-75 text-white'
+                          : 'bg-white',
+                        'relative flex cursor-pointer rounded px-2 py-1 focus:outline-none'
+                      )
+                    }
                   >
-                    {option}
-                  </button>
+                    {({ checked }) => (
+                      <>
+                        <div className="flex gap-4 w-full items-center justify-between">
+                          <div className="flex items-center">
+                            <div className="text-sm">
+                              <RadioGroup.Label
+                                as="p"
+                                className={`font-medium  ${
+                                  checked ? 'text-white' : 'text-gray-900'
+                                }`}
+                              >
+                                {capitalize(option)}
+                              </RadioGroup.Label>
+                            </div>
+                          </div>
+                          <div className="shrink-0 text-white bg-gray-50 bg-opacity-25 p-0.5 rounded-full">
+                            <CheckIcon className="h-4 w-4" />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </RadioGroup.Option>
                 ))}
-              </div>
+              </RadioGroup>
             </Popover.Panel>
           </Transition>
         </Popover>
       </div>
+
       <Doughnut
         className="w-full mx-8 p-6"
         data={{

@@ -1,3 +1,4 @@
+import { SettingId } from '@/lib/enumerators'
 import {
   ArrowLeftOnRectangleIcon,
   BellAlertIcon,
@@ -5,9 +6,15 @@ import {
   FingerPrintIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
-import { SettingId } from '@stratego-sts/lib/enumerators'
 
-export const navigationLinks = [
+export const adminNavigationLinks = [
+  { name: 'Console', href: '/admin/console' },
+  { name: 'Users', href: '/admin/users' },
+  { name: 'Projects', href: '/admin/projects' },
+  { name: 'Tickets', href: '/admin/tickets' },
+]
+
+export const clientNavigationLinks = [
   { name: 'Dashboard', href: '/account/dashboard' },
   { name: 'Projects', href: '/account/projects' },
   { name: 'Tickets', href: '/account/tickets' },
@@ -18,10 +25,16 @@ export const settingsLinks: Array<{
   description: string
   href: string
   icon: React.ForwardRefExoticComponent<
-    React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & {
-      title?: string
-      titleId?: string
-    } & React.RefAttributes<SVGSVGElement>
+    Extend<
+      Extend<
+        React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>,
+        React.RefAttributes<SVGSVGElement>
+      >,
+      {
+        title?: string
+        titleId?: string
+      }
+    >
   >
 }> = [
   {
@@ -44,7 +57,33 @@ export const settingsLinks: Array<{
   },
 ]
 
-export const settingsQuickActions = [
+export const settingsQuickActions: Array<
+  Extend<
+    {
+      name: string
+      icon: React.ForwardRefExoticComponent<
+        Extend<
+          Omit<React.SVGProps<SVGSVGElement>, 'ref'>,
+          Extend<
+            {
+              title?: string | undefined
+              titleId?: string | undefined
+            },
+            React.RefAttributes<SVGSVGElement>
+          >
+        >
+      >
+    },
+    Exclusive<
+      {
+        href: string
+      },
+      {
+        action: () => void
+      }
+    >
+  >
+> = [
   {
     name: 'User guide',
     href: '/user-guide',
@@ -52,9 +91,7 @@ export const settingsQuickActions = [
   },
   {
     name: 'Logout',
-    action: () => {
-      window.location.href = '/logout'
-    },
+    href: '/logout',
     icon: ArrowLeftOnRectangleIcon,
   },
 ]

@@ -1,0 +1,74 @@
+.link-editor
+  position: absolute
+  z-index: 100
+  top: -10000px
+  left: -10000px
+  margin-top: -6px
+  max-width: 300px
+  width: 100%
+  opacity: 0
+  background-color: theme('colors.white')
+  box-shadow: theme('boxShadow.md')
+  border-radius: 0.25rem
+  transition: opacity 0.5s
+
+  & .link-input
+    display: block
+    width: calc(100% - 24px)
+    box-sizing: border-box
+    margin: 8px 12px
+    padding: 8px 12px
+    border-radius: 0.25rem
+    background-color: theme('colors.gray.100')
+    color: theme('colors.gray.950')
+    border: 0
+    outline: 0
+    position: relative
+    font-family: inherit
+
+  & div.link-edit
+    background-image: url(../../../public/images/icons/pencil-fill.svg)
+    background-size: 16px
+    background-position: center
+    background-repeat: no-repeat
+    width: 35px
+    vertical-align: -0.25em
+    position: absolute
+    right: 0
+    top: 0
+    bottom: 0
+    cursor: pointer
+
+  & .link-input a
+    color: theme('colors.blue.600')
+    text-decoration: none
+    display: block
+    white-space: nowrap
+    overflow: hidden
+    margin-right: 30px
+    text-overflow: ellipsis
+
+    &:hover
+      text-decoration: underline
+
+  & .button
+    width: 20px
+    height: 20px
+    display: inline-block
+    padding: 6px
+    border-radius: 0.25rem
+    cursor: pointer
+    margin: 0 2px
+
+  & .button.hovered
+    width: 20px
+    height: 20px
+    display: inline-block
+    background-color: theme('colors.gray.100')
+
+  & .button i
+    background-size: contain
+    display: inline-block
+    height: 20px
+    width: 20px
+    vertical-align: -0.25em

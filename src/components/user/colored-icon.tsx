@@ -1,22 +1,25 @@
+import { getMonoContrast } from '@/lib/colors'
 import { UserIcon } from '@heroicons/react/24/outline'
-import { getMonoContrast } from '@stratego-sts/lib/colors'
 import chroma from 'chroma-js'
 import classNames from 'classnames'
 import { useMemo } from 'react'
 
 type IconSize = 'inline' | number
 
-type ColoredUserIconProps<Size extends IconSize> = {
-  color?: string
-  size?: Size
-  content?: string
-} & (Size extends number
-  ? {
-      sizeUnit?: 'px' | 'rem' | 'em'
-    }
-  : {
-      sizeUnit?: never
-    })
+type ColoredUserIconProps<Size extends IconSize> = Extend<
+  {
+    color?: string
+    size?: Size
+    content?: string
+  },
+  Size extends number
+    ? {
+        sizeUnit?: 'px' | 'rem' | 'em'
+      }
+    : {
+        sizeUnit?: never
+      }
+>
 
 const ColoredUserIcon = <Size extends IconSize>({
   color,
@@ -64,11 +67,11 @@ const ColoredUserIcon = <Size extends IconSize>({
             color: getMonoContrast(backgroundColor),
             height:
               size === 'inline'
-                ? '0.75em'
+                ? '100%'
                 : `${(size as number) * 0.5}${sizeUnit}`,
             width:
               size === 'inline'
-                ? '0.75em'
+                ? 'auto'
                 : `${(size as number) * 0.5}${sizeUnit}`,
           }}
         />

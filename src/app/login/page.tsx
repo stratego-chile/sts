@@ -1,11 +1,21 @@
+'use client'
+
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useMemo } from 'react'
 
 const CredentialsForm = dynamic(
-  () => import('@stratego-sts/components/login/credentials-form')
+  () => import('@/components/login/credentials-form')
 )
 
 const Login = () => {
+  const searchParams = useSearchParams()
+
+  const returnUrl = useMemo(
+    () => searchParams.get('returnUrl') ?? undefined,
+    [searchParams]
+  )
+
   return (
     <div className="grid min-h-full">
       <div className="flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -13,9 +23,8 @@ const Login = () => {
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign in to your Stratego STS account
           </h2>
-          <Suspense>
-            <CredentialsForm />
-          </Suspense>
+
+          <CredentialsForm returnUrl={returnUrl} />
         </div>
       </div>
     </div>

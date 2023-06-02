@@ -8,18 +8,15 @@ type ForgotPasswordModalProps = {
   onClose?: () => void
 }
 
-const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
-  open,
-  onClose,
-}) => {
-  const cancelButtonRef = useRef<HTMLElement>(null)
+const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
+  const closeButtonRef = useRef<HTMLElement>(null)
 
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
-        initialFocus={cancelButtonRef}
+        initialFocus={closeButtonRef}
         onClose={() => onClose?.()}
       >
         <Transition.Child

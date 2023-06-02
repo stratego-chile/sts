@@ -1,10 +1,8 @@
-import { getPageTitle } from '@stratego-sts/lib/format'
+import { getPageTitle } from '@/lib/format'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const Header = dynamic(
-  () => import('@stratego-sts/components/layout/default-header')
-)
+const Header = dynamic(() => import('@/components/layout/default-header'))
 
 export const metadata = {
   title: getPageTitle('Home'),

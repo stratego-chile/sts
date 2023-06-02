@@ -1,5 +1,6 @@
-import { checkSession } from '@stratego-sts/lib/session'
-import { Projects } from '@stratego-sts/models/projects'
+import { AccountRole } from '@/lib/enumerators'
+import { checkSession } from '@/lib/session'
+import { Projects } from '@/models/projects'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -9,5 +10,11 @@ export const GET = async () => {
 
   if (!user) return NextResponse.json([], { status: StatusCodes.UNAUTHORIZED })
 
-  return NextResponse.json(await Projects.getProjectsByOwnerId(user.id))
+  const isAdmin = [AccountRole.Admin, AccountRole.Auditor].includes(user.role)
+
+  return NextResponse.json(
+    isAdmin
+      ? await Projects.getAll()
+      : await Projects.getProjectsByOwnerId(user.id)
+  )
 }

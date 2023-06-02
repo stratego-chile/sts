@@ -18,7 +18,7 @@ const DefaultHeader: React.FC<WithoutProps> = () => {
 
             <Image
               className="h-8 w-auto"
-              src="/vectors/brand-logo.svg"
+              src="/images/brand/logo.svg"
               height={48}
               width={48}
               alt={process.env.BRAND_NAME}
@@ -51,7 +51,7 @@ const DefaultHeader: React.FC<WithoutProps> = () => {
 
               <Image
                 className="h-8 w-auto"
-                src="/vectors/brand-logo.svg"
+                src="/images/brand/logo.svg"
                 height={48}
                 width={48}
                 alt={process.env.BRAND_NAME}

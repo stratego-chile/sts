@@ -1,7 +1,6 @@
-import { SettingId } from '@stratego-sts/lib/enumerators'
-import { checkSession } from '@stratego-sts/lib/session'
-import { Users } from '@stratego-sts/models/users'
-import { TUserSecurity } from '@stratego-sts/schemas/user'
+import { checkSession } from '@/lib/session'
+import { Users } from '@/models/users'
+import type { TUserSecurity } from '@/schemas/user'
 import { cookies } from 'next/headers'
 
 const getUserSecuritySettings = async (): Promise<Unset<TUserSecurity>> => {
@@ -21,7 +20,6 @@ const SecuritySettingsPage = async () => {
 
   return (
     <section className="flex flex-col flex-grow w-full gap-4">
-      <span>{SettingId.Security}</span>
       <pre>
         <code>
           {JSON.stringify(Object.keys(userSecuritySettings), null, 2)}

@@ -1,5 +1,5 @@
-import { AccountRole, AccountStatus } from '@stratego-sts/lib/enumerators'
-import { createSchema, type Infer } from '@swind/schema'
+import { AccountRole, AccountStatus, IconType } from '@/lib/enumerators'
+import { createSchema, type Infer } from 'solarwind'
 
 const userProfileIconSchema = createSchema({
   /**
@@ -7,7 +7,13 @@ const userProfileIconSchema = createSchema({
    */
   url: 'string?',
   color: 'string?',
-})
+  prefer: {
+    enum: Object.values(IconType),
+    optional: true,
+  },
+} as const)
+
+export type TUserProfileIcon = Infer<typeof userProfileIconSchema>
 
 export const userProfileSchema = createSchema({
   icon: {
@@ -17,18 +23,27 @@ export const userProfileSchema = createSchema({
   firstName: 'string',
   lastName: 'string',
   alias: 'string?',
-})
+} as const)
 
 export type TUserProfile = Infer<typeof userProfileSchema>
 
 export const userNotificationsSchema = createSchema({
-  email: 'boolean',
+  email: 'boolean?',
+  inApp: 'boolean?',
 } as const)
 
 export type TUserNotifications = Infer<typeof userNotificationsSchema>
 
 export const userSecuritySchema = createSchema({
   accessKey: 'string',
+  accessTokens: {
+    object: {
+      label: 'string',
+      value: 'string',
+    },
+    optional: true,
+    list: true,
+  },
 } as const)
 
 export type TUserSecurity = Infer<typeof userSecuritySchema>
@@ -50,7 +65,7 @@ export type TUserSettings = Infer<typeof userSettingsSchema>
 export const userSchema = createSchema({
   id: 'ID',
   email: 'email',
-  parentId: 'string?',
+  parentId: 'ID?',
   settings: {
     type: userSettingsSchema,
   },
@@ -70,4 +85,11 @@ export const userSchema = createSchema({
   updatedAt: 'int',
 } as const)
 
-export type TUser = Infer<typeof userSchema>
+export type TUser = Extend<
+  Omit<Infer<typeof userSchema>, 'id' | 'parentId'>,
+  {
+    id: Stratego.STS.Utils.UUID
+    email: Stratego.STS.Auth.Email
+    parentId?: Stratego.STS.Utils.UUID
+  }
+>

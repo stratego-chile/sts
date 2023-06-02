@@ -1,4 +1,4 @@
-import Spinner from '@stratego-sts/components/misc/spinner'
+import Spinner from '@/components/misc/spinner'
 
 const LoginTemplate = async ({
   children,

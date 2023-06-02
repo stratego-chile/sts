@@ -1,7 +1,20 @@
-import { Connector } from '@stratego-sts/lib/db-connector'
-import type { TProject } from '@stratego-sts/schemas/project'
+import { Connector } from '@/lib/db-connector'
+import type { TProject } from '@/schemas/project'
 
 export class Projects {
+  static async getAll() {
+    const connection = await Connector.connect()
+
+    if (!connection) return []
+
+    const projects = await connection
+      .collection<TProject>('projects')
+      .find()
+      .toArray()
+
+    return projects ?? []
+  }
+
   static async getProjectsByOwnerId(ownerId: string): Promise<TProject[]> {
     const connection = await Connector.connect()
 
@@ -25,6 +38,18 @@ export class Projects {
       .findOne({ id })
 
     return project
+  }
+
+  static async getAllTickets() {
+    const projects = await Projects.getAll()
+
+    return projects.flatMap(({ tickets: $tickets, ...project }) =>
+      $tickets.map((ticket) => ({
+        projectId: project.id,
+        projectName: project.name,
+        ...ticket,
+      }))
+    )
   }
 
   static async getTickets(ownerId: string) {

@@ -89,8 +89,10 @@ const Paginator: React.FC<PaginatorProps> = ({
   return (
     <div className="flex flex-col flex-grow gap-2 w-full">
       {paginationControlPosition.startsWith('top') && paginationControls}
+
       <div className={wrapperClassName}>
         {items.length === 0 && placeholder}
+
         {items.map((item, key) => {
           const page = Math.ceil((key + 1) / itemsPerPage)
 
@@ -106,6 +108,7 @@ const Paginator: React.FC<PaginatorProps> = ({
           )
         })}
       </div>
+
       {paginationControlPosition.startsWith('bottom') && paginationControls}
     </div>
   )

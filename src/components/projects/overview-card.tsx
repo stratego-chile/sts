@@ -3,30 +3,29 @@ import {
   coloredBoxStyles,
   getMonoContrast,
   projectStatusColors,
-} from '@stratego-sts/lib/colors'
-import { getFormattedDateDifference } from '@stratego-sts/lib/format'
-import type { TProject } from '@stratego-sts/schemas/project'
+} from '@/lib/colors'
+import { getFormattedDateDifference } from '@/lib/format'
+import type { TProject } from '@/schemas/project'
 import classNames from 'classnames'
 import format from 'date-fns/format'
 import fromUnixTime from 'date-fns/fromUnixTime'
-import { useRouter } from 'next/navigation'
 
 type ProjectOverviewProps = {
   project: TProject
+  onClick?: (projectId: Stratego.STS.Utils.UUID) => void
 }
 
-const ProjectOverviewCard: React.FC<ProjectOverviewProps> = ({ project }) => {
-  const router = useRouter()
-
+const ProjectOverviewCard: React.FC<ProjectOverviewProps> = ({
+  project,
+  onClick,
+}) => {
   return (
     <div
       className={classNames(
-        'flex flex-col gap-4 rounded-lg shadow-md bg-gray-50 p-4 cursor-pointer',
-        'hover:bg-white hover:shadow-lg transition duration-200 ease-in-out'
+        'flex flex-col gap-4 rounded-lg shadow-md p-4 cursor-pointer bg-white',
+        'hover:shadow-xl transition-shadow duration-200 ease-in-out'
       )}
-      onClick={() => {
-        router.push(`/account/projects/${project.id}`)
-      }}
+      onClick={() => onClick?.(project.id as Stratego.STS.Utils.UUID)}
     >
       <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
         <div
@@ -77,7 +76,7 @@ const ProjectOverviewCard: React.FC<ProjectOverviewProps> = ({ project }) => {
                   'inline-flex items-center align-middle rounded p-2 gap-1 bg-gray-500 text-gray-50',
                   'hover:shadow-md hover:bg-gray-700 transition duration-200 ease-in-out'
                 )}
-                onClick={() => router.push(`/account/projects/${project.id}`)}
+                onClick={() => onClick?.(project.id as Stratego.STS.Utils.UUID)}
               >
                 <TicketIcon className="inline-flex h-5 w-5" />
 
