@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -25,22 +21,16 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@stratego-sts/*": [
-        "./src/*"
-      ],
+      "@/*": ["./src/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "types/modules"
-    ]
+    "typeRoots": ["node_modules/@types", "types/modules"]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.jsx",
     ".next/types/**/*.ts"
-, "src/app/logout/route.ts.old"  ],
-  "exclude": [
-    "node_modules"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
