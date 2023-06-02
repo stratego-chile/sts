@@ -1,33 +1,37 @@
+---
 version: 2.1
-orbs:
-  node:
-    executors:
-      default:
-        docker:
-          - image: cimg/node:20.1.0
-    commands:
-      install:
-        description: "Install PNPM and repo dependencies"
-        steps:
-          - run:
-              name: Install PNPM
-              command: npm install -g pnpm
-          - run:
-              name: Install dependencies
-              command: pnpm install
+
 jobs:
-  test:
-    executor: node/default
-    description: "Run tests"
+  lint:
+    docker:
+      - image: node:20
+    resource_class: large
+    parallelism: 10
+
     steps:
       - checkout
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
       - run:
-          name: Install local dependencies
+          name: Install pnpm package manager
+          command: |
+            corepack enable
+            corepack prepare pnpm@latest-8 --activate
+      - run:
+          name: Install Dependencies
           command: pnpm install
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - node_modules
       - run:
-          name: Check linting
+          name: Lint code
           command: pnpm lint
+
 workflows:
   test:
     jobs:
-      - test
+      - lint
