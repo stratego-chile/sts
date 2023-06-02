@@ -40,7 +40,7 @@ export class Stats {
     return stats
   }
 
-  static async getDashboardStats(ownerId: string) {
+  static async getDashboardStats(ownerId: Stratego.STS.Utils.UUID) {
     const stats: Stratego.STS.KPI.Full = {
       projects: {
         closed: 0,

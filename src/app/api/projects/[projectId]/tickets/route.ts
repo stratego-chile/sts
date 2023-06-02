@@ -9,7 +9,7 @@ export const GET = async (
   {
     params,
   }: {
-    params: { projectId: string }
+    params: { projectId: Stratego.STS.Utils.UUID }
   }
 ) => {
   const user = await checkSession(cookies())

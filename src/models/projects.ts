@@ -15,7 +15,9 @@ export class Projects {
     return projects ?? []
   }
 
-  static async getProjectsByOwnerId(ownerId: string): Promise<TProject[]> {
+  static async getProjectsByOwnerId(
+    ownerId: Stratego.STS.Utils.UUID
+  ): Promise<TProject[]> {
     const connection = await Connector.connect()
 
     if (!connection) return []
@@ -28,7 +30,9 @@ export class Projects {
     return projects
   }
 
-  static async getProjectById(id: string): Promise<TProject | null> {
+  static async getProjectById(
+    id: Stratego.STS.Utils.UUID
+  ): Promise<TProject | null> {
     const connection = await Connector.connect()
 
     if (!connection) return null
@@ -52,7 +56,7 @@ export class Projects {
     )
   }
 
-  static async getTickets(ownerId: string) {
+  static async getTickets(ownerId: Stratego.STS.Utils.UUID) {
     const projects = await Projects.getProjectsByOwnerId(ownerId)
 
     return projects.flatMap(({ tickets: $tickets, ...project }) =>
@@ -64,7 +68,7 @@ export class Projects {
     )
   }
 
-  static async getProjectTickets(projectId: string) {
+  static async getProjectTickets(projectId: Stratego.STS.Utils.UUID) {
     const connection = await Connector.connect()
 
     if (!connection) return []
@@ -76,7 +80,10 @@ export class Projects {
     return project?.tickets ?? []
   }
 
-  static async getTicket(ownerId: string, ticketId: string) {
+  static async getTicket(
+    ownerId: Stratego.STS.Utils.UUID,
+    ticketId: Stratego.STS.Utils.UUID
+  ) {
     return (await Projects.getTickets(ownerId)).find(
       ({ id }) => id === ticketId
     )
