@@ -1,6 +1,12 @@
 {
   "name": "Stratego STS",
   "short_name": "Stratego STS",
+  "description": "The Stratego support ticket system",
+  "author": "Stratego Technologies",
+  "developer": {
+    "name": "Benjamin E. Calisto",
+    "url": "https://github.com/KBeDevel"
+  },
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
