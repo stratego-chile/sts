@@ -1,7 +1,7 @@
 export {}
 
 declare global {
-  namespace NodeJS {
+  module NodeJS {
     interface ProcessEnv {
       // Session
       /**
@@ -13,6 +13,17 @@ declare global {
        */
       SESSION_COOKIE_PASSWORD: string
       SESSION_STORE_KEY: string
+
+      /**
+       * @server-side-only
+       * Time in seconds
+       */
+      SESSION_DEFAULT_TTL: `${number}`
+      /**
+       * @server-side-only
+       * Time in seconds
+       */
+      SESSION_EXTENDED_TTL: `${number}`
 
       // App identity
       BRAND_NAME: string
@@ -44,6 +55,11 @@ declare global {
        * @server-side-only
        */
       PASSWORD_SECURITY_SERVER_SALT: string
+
+      /**
+       * @server-side-only
+       */
+      SECURE?: 'true' | 'false'
     }
   }
 }
