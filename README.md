@@ -1,5 +1,7 @@
 # Stratego STS
 
+> ⚠️ This application is under development and is not ready for production.
+
 Our Support Ticket System.
 
 ## What is this?
