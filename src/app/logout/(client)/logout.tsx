@@ -1,6 +1,6 @@
 'use client'
 
-import { removeCookies } from 'cookies-next'
+import { deleteCookie } from 'cookies-next'
 import { IronSessionOptions } from 'iron-session'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -14,12 +14,11 @@ const ClientLogout = ({ user, config }: ClientLogoutProps) => {
   const router = useRouter()
 
   useEffect(() => {
-    if (user && config) {
-      removeCookies(process.env.SESSION_COOKIE_NAME, {
+    if (user && config)
+      deleteCookie(process.env.SESSION_COOKIE_NAME, {
         ...config,
         expires: config.expires ? new Date(config.expires) : undefined,
       })
-    }
 
     router.push('/')
 
