@@ -37,7 +37,7 @@ declare global {
        * @server-side-only
        */
       CAPTCHA_SECRET: string
-      CAPTCHA_MIN_SCORE: string
+      CAPTCHA_MIN_SCORE: `${number}`
 
       // MongoDB config
       /**
