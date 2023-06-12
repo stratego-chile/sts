@@ -52,7 +52,7 @@ export enum SettingId {
 
 export enum StatFilter {
   Date = 'date',
-  Category = 'category',
+  Status = 'status',
 }
 //#endregion
 
