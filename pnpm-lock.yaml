@@ -123,8 +123,8 @@ dependencies:
     specifier: ^1.0.6
     version: 1.0.6
   solarwind:
-    specifier: ^1.0.13
-    version: 1.0.13
+    specifier: ^2.0.0
+    version: 2.0.1
   swr:
     specifier: ^2.1.5
     version: 2.1.5(react@18.2.0)
@@ -3233,12 +3233,12 @@ packages:
       tslib: 2.5.3
     dev: false
 
-  /@swind/entity@1.0.13:
-    resolution: {integrity: sha512-lkuLplCt3CqYq3sDPEE3UoLGfy/jnzSiJrb9lnki9SZcd16mOgfyUc9ZElcY+84z8G6/agXFqr2KBWESsdjPVw==}
+  /@swind/entity@2.0.1:
+    resolution: {integrity: sha512-FIXTKA9d8BrO4ZXQ9ZCRJctSI/TxSI6k5MeWltdFSd2DRH3b/XCx35qP4jR2ZWdK1f1HbHn3d/ESXKIFjbC3Eg==}
     dependencies:
-      '@swind/schema': 1.0.13
-      '@swind/transporter': 1.0.13
-      '@swind/utils': 1.0.13
+      '@swind/schema': 2.0.1
+      '@swind/transporter': 2.0.1
+      '@swind/utils': 2.0.1
       dataloader: 2.1.0
       plugin-hooks: 2.0.0
       sift: 16.0.0
@@ -3246,24 +3246,24 @@ packages:
       - supports-color
     dev: false
 
-  /@swind/schema@1.0.13:
-    resolution: {integrity: sha512-d7jxX6i1KlUUdC9wUABda+ckl2VkFE9QItIZ8+3O0AtL4cCIW9ii1nn/D/zpz0v8Kyh48ZBUN5DDAT3uVt/+LQ==}
+  /@swind/schema@2.0.1:
+    resolution: {integrity: sha512-CqbbIlMHJQcrV8eFgVJMwLfc8dPbWbNoBThsO4kfccmUXq2Z+rXbJNplkv2nWHbj+DFOsRPn2JupAKCI5LtlZg==}
     dependencies:
-      '@swind/utils': 1.0.13
+      '@swind/utils': 2.0.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@swind/server@1.0.13:
-    resolution: {integrity: sha512-HHUI8KLUD3PkoxEldVKU+KXiiuMnronLZ2lD7gGaBXgzR0706hIxtH3ZXQgbghSVYU0hy8cSANvAgtnA/IhS1Q==}
+  /@swind/server@2.0.1:
+    resolution: {integrity: sha512-blUp63J0EA0YGoG+SuCb3Ly/RV/avlxP7gXJWICRsrpzKA9n+nALSiR5Dhy10LBLYJLozWs0yU6G0dOLN4+h5Q==}
     dependencies:
-      '@swind/schema': 1.0.13
-      '@swind/utils': 1.0.13
+      '@swind/schema': 2.0.1
+      '@swind/utils': 2.0.1
       body-parser: 1.20.2
       graphql-playground-html: 1.6.30
       http-errors: 2.0.0
       http-status-codes: 2.2.0
-      logstorm: 1.0.13
+      logstorm: 2.0.1
       plugin-hooks: 2.0.0
       qs: 6.11.2
       url-pattern: 1.0.3
@@ -3271,11 +3271,11 @@ packages:
       - supports-color
     dev: false
 
-  /@swind/transporter@1.0.13:
-    resolution: {integrity: sha512-ysc7k2DwQAklk0yBAELf5gztGNyeR39seVt/rvEiZPy9sWLOR+4NU6uYYVqCe6g4lxxWGG0EhMBcXEawCcBUIg==}
+  /@swind/transporter@2.0.1:
+    resolution: {integrity: sha512-/w40bTkcJ3V9sT6TXZ2aav7nAY6+JaWIXIOu7KQw33GFOrD0wz4pYHXCGjgEyo8IUX0VDvu7nUzApUmYC5kwag==}
     dependencies:
-      '@swind/schema': 1.0.13
-      '@swind/utils': 1.0.13
+      '@swind/schema': 2.0.1
+      '@swind/utils': 2.0.1
       dataloader: 2.1.0
       plugin-hooks: 2.0.0
       sift: 16.0.0
@@ -3283,8 +3283,8 @@ packages:
       - supports-color
     dev: false
 
-  /@swind/utils@1.0.13:
-    resolution: {integrity: sha512-OVRxxPpE9d0/Aub7xbAluPVuZYgqiT64ErFJC0xlkUaZ4Igr0kVTbBK9j3W8wcfHPIFCGXMBK+axkUsTXPLjfw==}
+  /@swind/utils@2.0.1:
+    resolution: {integrity: sha512-ZL5brLX+WnnyEQXbVIIBxeo5nfEqJEfDLtCNY9MLpdmePj2NuxLvZbaOCe5pj9uZ9e+D7PV/nQB3x9Jz/lg2eg==}
     dependencies:
       aggio: 0.2.0
       awesome-phonenumber: 4.1.0
@@ -8269,7 +8269,6 @@ packages:
       chalk: 2.4.2
       diff-match-patch: 1.0.5
     dev: false
-    bundledDependencies: []
 
   /jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
@@ -8433,8 +8432,8 @@ packages:
       is-unicode-supported: 0.1.0
     dev: false
 
-  /logstorm@1.0.13:
-    resolution: {integrity: sha512-0gSXf0Cq6yER2SRt5oa0wUn7+5FRz10wuPljcCRAF7P1uh8ukC68+rnT7BjdTrXL2KZXY1VO/ShY2v70rgDr1w==}
+  /logstorm@2.0.1:
+    resolution: {integrity: sha512-rDpDa7X05gubvA1Eo9reip80y2NhgTbp0g+nI/wwk4ayXq/OfYcgnkJMZo/JJ7QbFc5+ETni40SgAuMTQ0gn5Q==}
     dependencies:
       plugin-hooks: 2.0.0
     dev: false
@@ -11472,14 +11471,14 @@ packages:
       smart-buffer: 4.2.0
     dev: false
 
-  /solarwind@1.0.13:
-    resolution: {integrity: sha512-+ovSwSZI6ChWiAZmRD720DaSpqVcuyej3W0xbHtlGkj47EZ5pTW/Sykn+Z2YfYOJdOqwz8CeVShGL1qneIqDOQ==}
+  /solarwind@2.0.1:
+    resolution: {integrity: sha512-ddq5BGu+DyykVgABlHlu4kVv0ez5P/lKcVg5SN9lcyk9Tzl+g1tWYCHUSp0pgY/Cwv9XKnDO9SEd+9i6kq0nOQ==}
     dependencies:
-      '@swind/entity': 1.0.13
-      '@swind/schema': 1.0.13
-      '@swind/server': 1.0.13
-      '@swind/transporter': 1.0.13
-      '@swind/utils': 1.0.13
+      '@swind/entity': 2.0.1
+      '@swind/schema': 2.0.1
+      '@swind/server': 2.0.1
+      '@swind/transporter': 2.0.1
+      '@swind/utils': 2.0.1
     transitivePeerDependencies:
       - supports-color
     dev: false
