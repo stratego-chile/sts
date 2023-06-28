@@ -59,7 +59,7 @@
     "salted-sha512": "^1.0.6",
     "solarwind": "^1.0.13",
     "swr": "^2.1.5",
-    "vercel": "^30.2.1",
+    "vercel": "^31.0.0",
     "yup": "^1.2.0"
   },
   "devDependencies": {
