@@ -15,7 +15,7 @@ It is a web application that allows you to create projects, tickets and users. I
 
 #### Local tools
 
-- [Node.js](https://nodejs.org/en/) >= 18.0.0
+- [Node.js](https://nodejs.org/en/) >= 20.0.0
 - [PNPM](https://pnpm.io/) >= 8.0.0
 
 #### Optional tools
