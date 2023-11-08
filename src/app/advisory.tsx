@@ -1,15 +1,10 @@
 'use client'
 
 import { Advisor } from '@/lib/advisor'
-// import { useEffect } from 'react'
-import useEffectOnce from 'react-use/lib/useEffectOnce'
+import { useEffect } from 'react'
 
 const Advisory = () => {
-  useEffectOnce(() => {
-    const advisor = new Advisor()
-
-    advisor.emit()
-  })
+  useEffect(() => new Advisor().emit(), [])
 
   return null as React.ReactNode
 }
