@@ -1,4 +1,4 @@
-export const checkCaptchaToken = async (token: string) => {
+export async function checkCaptchaToken(token: string) {
   try {
     const destinationURL = new URL(process.env.CAPTCHA_VERIFIER_API)
 
