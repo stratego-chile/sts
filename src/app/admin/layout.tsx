@@ -27,7 +27,7 @@ const AdministrationLayout = async ({
 
       if (returnPathSearchParams) {
         const searchParams = JSON.parse(
-          decodeURIComponent(returnPathSearchParams)
+          decodeURIComponent(returnPathSearchParams),
         ) as Record<string, string>
 
         const parsedSearchParams = new URLSearchParams(searchParams)
@@ -42,6 +42,7 @@ const AdministrationLayout = async ({
   return (
     <div className="flex flex-col flex-grow h-full">
       <Header />
+
       <Suspense fallback={<Loading />}>{children}</Suspense>
     </div>
   )

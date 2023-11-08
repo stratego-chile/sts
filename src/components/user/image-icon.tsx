@@ -1,37 +1,39 @@
 import Image from 'next/image'
 
-type UserImageIconProps = {
+type SizeUnit = 'px' | 'em' | 'rem'
+
+type UserImageIconProps<S extends SizeUnit> = {
   imageURI: string
   size?: number
-  sizeUnit?: 'px' | 'em' | 'rem'
-  ssr?: boolean
+  sizeUnit?: S
+  ssr?: S extends 'px' ? boolean : never
 }
 
 const DEFAULT_SIZE = 128
 
-const UserImageIcon = ({
+const UserImageIcon = <S extends SizeUnit>({
   imageURI,
-  size = 128,
-  sizeUnit = 'px',
-  ssr = true,
-}: UserImageIconProps) => {
+  size = DEFAULT_SIZE,
+  sizeUnit = 'px' as S,
+  ssr = (sizeUnit === 'px' ? true : undefined) as UserImageIconProps<S>['ssr'],
+}: UserImageIconProps<S>) => {
   return ssr ? (
     <Image
-      className="relative w-full rounded-full"
+      className="relative rounded-full"
       alt="user-icon-image"
       src={imageURI}
-      width={sizeUnit === 'px' && size ? size : DEFAULT_SIZE}
-      height={sizeUnit === 'px' && size ? size : DEFAULT_SIZE}
+      width={sizeUnit === 'px' ? size : DEFAULT_SIZE}
+      height={sizeUnit === 'px' ? size : DEFAULT_SIZE}
     />
   ) : (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      className="relative w-full rounded-full"
+      className="relative rounded-full"
       alt="user-icon-image"
       src={imageURI}
       style={{
-        width: size ? `${size}${sizeUnit}` : DEFAULT_SIZE,
-        height: size ? `${size}${sizeUnit}` : DEFAULT_SIZE,
+        width: `${size}${sizeUnit}`,
+        height: 'auto',
       }}
     />
   )

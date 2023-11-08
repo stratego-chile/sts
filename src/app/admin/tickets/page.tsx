@@ -1,26 +1,26 @@
 'use client'
 
 import Loading from '@/app/admin/loading'
-import { TicketStatus } from '@/lib/enumerators'
 import { fetcher } from '@/lib/fetcher'
-import type { TTicket as PureTicketType } from '@/schemas/ticket'
+import { TicketStatus, type TTicket } from '@/schemas/ticket'
 import dynamic from 'next/dynamic'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 import useSWR from 'swr'
+import type { Merge } from 'type-fest'
 
 const Paginator = dynamic(() => import('@/components/misc/paginator'))
 
 const StatusListSelect = dynamic(
-  () => import('@/components/misc/status-list-select')
+  () => import('@/components/misc/status-list-select'),
 )
 
 const TicketOverviewCard = dynamic(
-  () => import('@/components/tickets/overview-card')
+  () => import('@/components/ticket/overview-card'),
 )
 
-type TicketType = Extend<
-  PureTicketType,
+type Ticket = Merge<
+  TTicket,
   {
     projectId: Stratego.STS.Utils.UUID
     projectName?: string
@@ -34,31 +34,29 @@ const ProjectsPage = () => {
 
   const status = useMemo(() => searchParams.get('status'), [searchParams])
 
-  const { data: rawTickets = [], isLoading } = useSWR<Array<TicketType>>(
+  const { data: rawTickets = [], isLoading } = useSWR<Array<Ticket>>(
     '/api/tickets',
-    fetcher
+    fetcher,
   )
 
   const tickets = useMemo(
     () =>
       rawTickets.filter(({ versions }) =>
-        status ? versions.at(-1)?.status === status : true
+        status ? versions.at(-1)?.status === status : true,
       ),
-    [rawTickets, status]
+    [rawTickets, status],
   )
 
   return (
     <div>
       <header className="bg-white border-b border-b-gray-200">
-        <div className="flex flex-col gap-4 mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <span className="flex flex-col md:flex-row justify-between gap-y-5">
-            <span className="flex flex-col lg:flex-row gap-2 lg:items-center text-3xl font-bold tracking-tight text-gray-900">
-              <span>Tickets</span>
+        <div className="flex flex-col gap-4 mx-auto max-w-7xl p-6 lg:px-8">
+          <span className="flex flex-col sm:flex-row justify-between gap-y-5">
+            <span className="flex flex-col sm:flex-row gap-2 sm:items-center text-3xl font-bold tracking-tight text-gray-900">
+              Tickets
             </span>
 
-            <div className="inline-flex gap-4">
-              <StatusListSelect statusType={TicketStatus} />
-            </div>
+            <StatusListSelect statusType={TicketStatus} />
           </span>
         </div>
       </header>
@@ -84,8 +82,15 @@ const ProjectsPage = () => {
               projectId={projectId}
               projectName={projectName}
               showProjectName
-              onClick={($projectId, ticketId) =>
-                router.push(`/admin/tickets/${$projectId}/${ticketId}#comments`)
+              onClick={($projectId, ticketId, section) =>
+                router.push(
+                  `/admin/tickets/${$projectId}/${ticketId}`.concat(
+                    section ? `#${section}` : '',
+                  ),
+                  {
+                    scroll: true,
+                  },
+                )
               }
             />
           ))}

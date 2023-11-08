@@ -1,14 +1,15 @@
 import type { RcFile } from 'antd/es/upload'
 import isBase64 from 'is-base64'
 
-export const getBase64 = async (img: RcFile) =>
-  await new Promise<string>((resolve) => {
+export async function getBase64(img: RcFile) {
+  return await new Promise<string>((resolve) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => resolve(reader.result as string))
     reader.readAsDataURL(img)
   })
+}
 
-export const getBase64BlobSize = (dataURI: string) => {
+export function getBase64BlobSize(dataURI: string) {
   let size = NaN
 
   try {

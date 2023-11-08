@@ -1,4 +1,5 @@
-import { AccountRole } from '@/lib/enumerators'
+import { maintainerRoles } from '@/helpers/roles'
+import { StatFilter } from '@/lib/enumerators'
 import { checkSession } from '@/lib/session'
 import { Stats } from '@/models/stats'
 import { StatusCodes } from 'http-status-codes'
@@ -12,28 +13,53 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json(null, { status: StatusCodes.UNAUTHORIZED })
 
   const config = {
-    by: request.nextUrl.searchParams.get('by') as
-      | Stratego.STS.KPI.Type
-      | 'ticketsByProject'
-      | null,
+    by: request.nextUrl.searchParams.get(
+      'by',
+    ) as Nullable<Stratego.STS.KPI.Type>,
+
     id: request.nextUrl.searchParams.get('id'),
+
+    listingMode: request.nextUrl.searchParams.get('list'),
+
+    // Filters
+    projectDate: request.nextUrl.searchParams.get(
+      StatFilter.ProjectDate,
+    ) as Nullable<`${number},${number}`>, // Timestamp
+
+    ticketDate: request.nextUrl.searchParams.get(
+      StatFilter.TicketDate,
+    ) as Nullable<`${number},${number}`>, // Timestamp
   }
 
-  const listingMode = request.nextUrl.searchParams.get('list')
+  const isAdmin = maintainerRoles.includes(user.role)
 
-  if (
-    listingMode === 'all' &&
-    ![AccountRole.Admin, AccountRole.Auditor].includes(user.role)
-  ) {
+  if (config.listingMode === 'all' && !isAdmin)
     return NextResponse.json(null, { status: StatusCodes.UNAUTHORIZED })
+
+  const filters: Stratego.STS.KPI.Filters = {}
+
+  if (config.projectDate && config.projectDate.split(',').length >= 2) {
+    const [from, to] = config.projectDate.split(',').map(Number)
+
+    filters[StatFilter.ProjectDate] = [from, to]
   }
 
-  const stats:
-    | Stratego.STS.KPI.Full
-    | Omit<Stratego.STS.KPI.Full, 'ticketsByProject'> =
-    request.nextUrl.searchParams.get('list') !== 'all'
-      ? await Stats.getDashboardStats(user.parentId ? user.parentId : user.id)
-      : await Stats.getAdminStats()
+  if (config.ticketDate && config.ticketDate.split(',').length >= 2) {
+    const [from, to] = config.ticketDate.split(',').map(Number)
+
+    filters[StatFilter.TicketDate] = [from, to]
+  }
+
+  const stats: StrictOmittedRequired<
+    Stratego.STS.KPI.Full,
+    'ticketsByProject'
+  > =
+    config.listingMode === 'all'
+      ? await Stats.getAdminStats(filters)
+      : await Stats.getDashboardStats(
+          user.parentId ? user.parentId : user.id,
+          filters,
+        )
 
   let result: Record<string, any> = stats
 
@@ -46,14 +72,14 @@ export const GET = async (request: NextRequest) => {
 
     if (config.id) {
       const $result = (stats as Stratego.STS.KPI.Full).ticketsByProject.find(
-        ({ id }) => id === config.id
+        ({ id }) => id === config.id,
       )
 
       if ($result) result = $result
       else
         return NextResponse.json(
           { error: 'Project not found' },
-          { status: 404 }
+          { status: 404 },
         )
     }
   }

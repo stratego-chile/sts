@@ -1,6 +1,6 @@
 import { packageManager, scripts } from '../package.json'
 import childProcess, { type ChildProcess } from 'child_process'
-;(async () => {
+;((async () => {
   try {
     const VERSION_SEPARATOR = '@'
 
@@ -48,4 +48,4 @@ import childProcess, { type ChildProcess } from 'child_process'
   } catch (error) {
     process.exit(1)
   }
-})()
+})())

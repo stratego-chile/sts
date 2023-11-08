@@ -1,16 +1,21 @@
+import fromUnixTime from 'date-fns/fromUnixTime'
+import isDate from 'date-fns/isDate'
+import isNumber from 'lodash.isnumber'
 import isPlainObject from 'lodash.isplainobject'
 
-export const isSerializable = (item: any) => {
+export function isSerializable<T extends object | Primitive>(
+  item: any,
+): item is Stringified<T> {
   let isNestedSerializable = false
 
-  const isPlain = (val: any) => {
+  const isPlain = (value: any) => {
     return (
-      typeof val === 'undefined' ||
-      typeof val === 'string' ||
-      typeof val === 'boolean' ||
-      typeof val === 'number' ||
-      Array.isArray(val) ||
-      isPlainObject(val)
+      typeof value === 'undefined' ||
+      typeof value === 'string' ||
+      typeof value === 'boolean' ||
+      typeof value === 'number' ||
+      Array.isArray(value) ||
+      isPlainObject(value)
     )
   }
 
@@ -29,4 +34,8 @@ export const isSerializable = (item: any) => {
   }
 
   return true
+}
+
+export function isTimestamp(sample: any): sample is number {
+  return isDate(sample) || (isNumber(sample) && isDate(fromUnixTime(sample)))
 }

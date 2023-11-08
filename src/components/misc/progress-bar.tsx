@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { useCallback, useMemo } from 'react'
 
 const ProgressBarFragment = dynamic(
-  () => import('@/components/misc/progress-bar-fragment')
+  () => import('@/components/misc/progress-bar-fragment'),
 )
 
 export type RewriteMode = 'path' | 'query'
@@ -34,7 +34,7 @@ export type ProgressBarProps<
   Keys extends keyof T,
   T extends Record<Keys, number>,
   AsLink extends boolean,
-  LinkUsage extends RewriteMode
+  LinkUsage extends RewriteMode,
 > = Extend<
   {
     stats?: T
@@ -57,7 +57,7 @@ const ProgressBar = <
   Keys extends string,
   T extends Record<Keys, number>,
   AsLink extends boolean,
-  LinkUsage extends RewriteMode
+  LinkUsage extends RewriteMode,
 >({
   asLink = false as AsLink,
   linkConfig,
@@ -71,9 +71,9 @@ const ProgressBar = <
       customTotal ??
       (Object.values(stats) as Array<T[keyof T]>).reduce(
         (previous, current) => previous + current,
-        0
+        0,
       ),
-    [customTotal, stats]
+    [customTotal, stats],
   )
 
   const getHref = useCallback(
@@ -100,7 +100,7 @@ const ProgressBar = <
 
       return undefined
     },
-    [asLink, linkConfig, onStatClick]
+    [asLink, linkConfig, onStatClick],
   )
 
   return (

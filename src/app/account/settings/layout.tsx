@@ -13,7 +13,7 @@ const SettingsLayout = ({ children }: PropsWithChildren<WithoutProps>) => {
 
   const currentSetting = useMemo(
     () => settingsLinks.find(({ href }) => href.includes(pathname))!,
-    [pathname]
+    [pathname],
   )
 
   return (
@@ -29,25 +29,31 @@ const SettingsLayout = ({ children }: PropsWithChildren<WithoutProps>) => {
       <main className="flex flex-grow w-full mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col w-full gap-4 bg-white rounded-xl shadow-md lg:shadow-lg lg:overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:h-full">
-            <div className="flex w-full lg:w-fit lg:h-full bg-gray-50">
-              <div className="flex flex-row w-full lg:w-fit justify-between lg:justify-normal lg:flex-col">
+            <div className="flex lg:w-fit lg:h-full bg-gray-50">
+              <div
+                className={classNames(
+                  'grid grid-flow-col justify-stretch w-full',
+                  'lg:!inline-flex lg:grid-flow-row lg:flex-col lg:justify-start lg:w-fit',
+                )}
+              >
                 {settingsLinks.map(({ name, href, ...item }, key) =>
                   createElement(
-                    currentSetting.href === href ? 'span' : 'button',
+                    currentSetting.href === href ? 'div' : 'button',
                     {
                       key,
                       className: classNames(
-                        'inline-flex items-center lg:text-left font-semibold gap-2 p-2 lg:pl-4 lg:pr-24 lg:py-6',
+                        'inline-flex items-center font-semibold justify-center gap-2 p-2 h-fit',
+                        'lg:pl-4 lg:pr-24 lg:py-6 lg:justify-start',
                         currentSetting.href === href
                           ? 'bg-gray-100'
-                          : 'hover:bg-gray-200 transition ease-in-out duration-200'
+                          : 'hover:bg-gray-200 transition ease-in-out duration-200',
                       ),
                       ...(currentSetting.href === href
                         ? {}
                         : {
                             onClick: () =>
                               router.replace(
-                                `/account/settings/${name.toLowerCase()}`
+                                `/account/settings/${name.toLowerCase()}`,
                               ),
                           }),
                     },
@@ -58,8 +64,8 @@ const SettingsLayout = ({ children }: PropsWithChildren<WithoutProps>) => {
                         aria-hidden="true"
                       />,
                       capitalize(name),
-                    ]
-                  )
+                    ],
+                  ),
                 )}
               </div>
             </div>

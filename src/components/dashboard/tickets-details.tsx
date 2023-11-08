@@ -1,5 +1,5 @@
 import { Popover, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon'
 import classNames from 'classnames'
 import { Fragment, useMemo } from 'react'
 
@@ -8,25 +8,25 @@ type TicketsDetailsProps = {
   colors?: Record<keyof Stratego.STS.KPI.Tickets, string>
 }
 
-const TicketsDetails: React.FC<TicketsDetailsProps> = ({ tickets, colors }) => {
+const TicketsDetails = ({ tickets, colors }: TicketsDetailsProps) => {
   const total = useMemo(
     () =>
       Object.values(tickets).reduce(
         (previous, current) => previous + current,
-        0
+        0,
       ),
-    [tickets]
+    [tickets],
   )
 
   return (
     <Popover className="relative">
       {({ open }) => (
-        <>
+        <Fragment>
           <Popover.Button className="px-1 ring-transparent rounded">
             <ChevronDownIcon
               className={classNames(
                 'h-4 w-4 text-gray-400',
-                open && 'rotate-180 transform'
+                open && 'rotate-180 transform',
               )}
               aria-hidden="true"
             />
@@ -77,7 +77,7 @@ const TicketsDetails: React.FC<TicketsDetailsProps> = ({ tickets, colors }) => {
               </div>
             </Popover.Panel>
           </Transition>
-        </>
+        </Fragment>
       )}
     </Popover>
   )

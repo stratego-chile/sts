@@ -24,6 +24,7 @@ dictionaries:
 words:
   - antd
   - atrule
+  - Authy
   - BSON
   - camelcase
   - capath
@@ -32,27 +33,39 @@ words:
   - desaturate
   - endregion
   - esnext
+  - fingerprintjs
   - formik
   - Formik
+  - geoip
   - headlessui
   - heroicons
   - indianred
   - isequal
+  - isnumber
   - isplainobject
   - jedec
+  - keyuri
   - lightgray
   - listitem
   - mediumseagreen
+  - monaco
   - msapplication
+  - otpauth
+  - otplib
   - popperjs
+  - powership
   - recaptcha
+  - responsibles
   - royalblue
-  - solarwind
   - stratego
   - swind
   - tailwindcss
+  - tanstack
   - timetravel
+  - totp
   - trojan
   - unmarshall
+  - Uturn
   - volta
+  - Winkler
   - wysiwyg

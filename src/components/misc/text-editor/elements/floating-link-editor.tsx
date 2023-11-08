@@ -15,7 +15,10 @@ import {
 } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const positionEditorElement = (editor: HTMLElement, rect: DOMRect | null) => {
+const positionEditorElement = (
+  editor: HTMLElement,
+  rect: Nullable<DOMRect>,
+) => {
   if (rect === null) {
     editor.style.opacity = '0'
     editor.style.top = '-1000px'
@@ -118,8 +121,8 @@ const FloatingLinkEditor = ({
           updateLinkEditor()
           return true
         },
-        LowPriority
-      )
+        LowPriority,
+      ),
     )
   }, [LowPriority, editor, updateLinkEditor])
 

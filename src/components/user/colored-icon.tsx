@@ -1,5 +1,5 @@
 import { getMonoContrast } from '@/lib/colors'
-import { UserIcon } from '@heroicons/react/24/outline'
+import UserIcon from '@heroicons/react/24/outline/UserIcon'
 import chroma from 'chroma-js'
 import classNames from 'classnames'
 import { useMemo } from 'react'
@@ -29,14 +29,14 @@ const ColoredUserIcon = <Size extends IconSize>({
 }: ColoredUserIconProps<Size>) => {
   const backgroundColor = useMemo(
     () => (color && chroma.valid(color) ? color : chroma.random().hex()),
-    [color]
+    [color],
   )
 
   return (
     <div
       className={classNames(
         'inline-flex items-center justify-center rounded-full',
-        size === 'inline' && 'h-auto w-auto'
+        size === 'inline' && 'h-auto w-auto',
       )}
       style={{
         backgroundColor,

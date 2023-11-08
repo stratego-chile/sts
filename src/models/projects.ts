@@ -1,91 +1,66 @@
 import { Connector } from '@/lib/db-connector'
 import type { TProject } from '@/schemas/project'
+import type { Filter } from 'mongodb'
+
+export const COLLECTION = 'projects'
 
 export class Projects {
-  static async getAll() {
+  static async getAllByCondition(filter?: Filter<TProject>) {
     const connection = await Connector.connect()
 
     if (!connection) return []
 
-    const projects = await connection
-      .collection<TProject>('projects')
-      .find()
-      .toArray()
+    const caller = connection.collection<TProject>(COLLECTION)
+
+    const projects = await (filter
+      ? caller.find(filter)
+      : caller.find()
+    ).toArray()
 
     return projects ?? []
   }
 
-  static async getProjectsByOwnerId(
-    ownerId: Stratego.STS.Utils.UUID
-  ): Promise<TProject[]> {
-    const connection = await Connector.connect()
+  static async getAll() {
+    return await Projects.getAllByCondition()
+  }
 
-    if (!connection) return []
+  static async getProjectsByOwnerId(ownerId: Stratego.STS.Utils.UUID) {
+    return await Projects.getAllByCondition({ ownerId })
+  }
 
-    const projects = await connection
-      .collection<TProject>('projects')
-      .find({ ownerId })
-      .toArray()
+  static async getProjectsByDateRange(from: number, to: number) {
+    return await Projects.getAllByCondition({
+      createdAt: {
+        $gte: from,
+        $lte: to,
+      },
+    })
+  }
 
-    return projects
+  static async getProjectsByOwnerIdWithDateRange(
+    ownerId: Stratego.STS.Utils.UUID,
+    from: number,
+    to: number,
+  ) {
+    return await Projects.getAllByCondition({
+      ownerId,
+      createdAt: {
+        $gte: from,
+        $lte: to,
+      },
+    })
+  }
+
+  static async getOwnedProjectById(
+    ownerId: Stratego.STS.Utils.UUID,
+    id: Stratego.STS.Utils.UUID,
+  ): Promise<Nullable<TProject>> {
+    return (await Projects.getAllByCondition({ ownerId, id })).at(0) ?? null
   }
 
   static async getProjectById(
-    id: Stratego.STS.Utils.UUID
-  ): Promise<TProject | null> {
-    const connection = await Connector.connect()
-
-    if (!connection) return null
-
-    const project = await connection
-      .collection<TProject>('projects')
-      .findOne({ id })
-
-    return project
-  }
-
-  static async getAllTickets() {
-    const projects = await Projects.getAll()
-
-    return projects.flatMap(({ tickets: $tickets, ...project }) =>
-      $tickets.map((ticket) => ({
-        projectId: project.id,
-        projectName: project.name,
-        ...ticket,
-      }))
-    )
-  }
-
-  static async getTickets(ownerId: Stratego.STS.Utils.UUID) {
-    const projects = await Projects.getProjectsByOwnerId(ownerId)
-
-    return projects.flatMap(({ tickets: $tickets, ...project }) =>
-      $tickets.map((ticket) => ({
-        projectId: project.id,
-        projectName: project.name,
-        ...ticket,
-      }))
-    )
-  }
-
-  static async getProjectTickets(projectId: Stratego.STS.Utils.UUID) {
-    const connection = await Connector.connect()
-
-    if (!connection) return []
-
-    const project = await connection
-      .collection<TProject>('projects')
-      .findOne({ id: projectId })
-
-    return project?.tickets ?? []
-  }
-
-  static async getTicket(
-    ownerId: Stratego.STS.Utils.UUID,
-    ticketId: Stratego.STS.Utils.UUID
-  ) {
-    return (await Projects.getTickets(ownerId)).find(
-      ({ id }) => id === ticketId
-    )
+    id: Stratego.STS.Utils.UUID,
+  ): Promise<Nullable<TProject>> {
+    return (await Projects.getAllByCondition({ id })).at(0) ?? null
   }
 }

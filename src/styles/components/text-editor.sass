@@ -17,6 +17,9 @@
     tab-size: 1
     caret-color: #444
     position: static
+    white-space: pre-wrap
+    flex-wrap: wrap
+    z-index: 1
 
   &-placeholder
     color: #999
@@ -67,75 +70,80 @@
     overflow-x: auto
     position: relative
 
-  &-code:before
-    content: attr(data-gutter)
-    position: absolute
-    background-color: #eee
-    left: 0
-    top: 0
-    border-right: 1px solid #ccc
-    padding: 8px
-    color: #777
-    white-space: pre-wrap
-    text-align: right
-    min-width: 25px
+    &:before
+      content: attr(data-gutter)
+      position: absolute
+      background-color: #eee
+      left: 0
+      top: 0
+      border-right: 1px solid #ccc
+      padding: 8px
+      color: #777
+      white-space: pre-wrap
+      text-align: right
+      min-width: 25px
 
-  &-code:after
-    content: attr(data-highlight-language)
-    top: 2%
-    right: 5px
-    padding: 3px
-    text-transform: uppercase
-    position: absolute
-    color: rgba(0, 0, 0, 0.5)
+    &:after
+      content: attr(data-highlight-language)
+      top: 2%
+      right: 5px
+      padding: 3px
+      text-transform: uppercase
+      position: absolute
+      color: rgba(0, 0, 0, 0.5)
 
-  &-tokenComment
-    color: slategray
+  &-token
+    &Comment
+      color: slategray
 
-  &-tokenPunctuation
-    color: #999
+    &Punctuation
+      color: #999
 
-  &-tokenProperty
-    color: #905
+    &Property
+      color: #905
 
-  &-tokenSelector
-    color: #690
+    &Selector
+      color: #690
 
-  &-tokenOperator
-    color: #9a6e3a
+    &Operator
+      color: #9a6e3a
 
-  &-tokenAttr
-    color: #07a
+    &Attr
+      color: #07a
 
-  &-tokenVariable
-    color: #e90
+    &Variable
+      color: #e90
 
-  &-tokenFunction
-    color: #dd4a68
+    &Function
+      color: #dd4a68
 
   &-paragraph
     margin: 0
     margin-bottom: 8px
     position: relative
+    display: block
+    width: 100%
 
-  &-paragraph:last-child
-    margin-bottom: 0
+    &:last-child
+      margin-bottom: 0
 
-  &-heading-h1
-    color: rgb(5, 5, 5)
-    font-weight: bolder
-    margin: 0
-    margin-bottom: 12px
-    padding: 0
-    font-size: 20px
+  &-heading
+    &-h1
+      color: rgb(5, 5, 5)
+      font-weight: bolder
+      margin: 0
+      font-size: 20px
+      margin-bottom: 12px
+      padding: 0
 
-  &-heading-h2
-    color: rgb(101, 103, 107)
-    font-weight: bold
-    margin: 0
-    margin-top: 10px
-    padding: 0
-    font-size: 16px
+    &-h2
+      color: rgb(101, 103, 107)
+      font-weight: bold
+      margin: 0
+      font-size: 16px
+      margin-top: 16px
+      margin-bottom: 10px
+      padding: 0
 
   &-quote
     margin: 0

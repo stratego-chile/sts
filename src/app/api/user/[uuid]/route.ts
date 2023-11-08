@@ -1,6 +1,7 @@
-import { AccountRole, AccountStatus } from '@/lib/enumerators'
+import { maintainerRoles } from '@/helpers/roles'
 import { checkSession } from '@/lib/session'
 import { Users } from '@/models/users'
+import { AccountStatus } from '@/schemas/user'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -11,17 +12,14 @@ export const GET = async (
     params,
   }: {
     params: { uuid: Stratego.STS.Utils.UUID }
-  }
+  },
 ) => {
   const user = await checkSession(cookies())
 
   if (
     !user ||
-    params.uuid !== user.id ||
-    ![AccountRole.Admin, AccountRole.Auditor].includes(
-      user.role as AccountRole
-    ) ||
-    ![AccountStatus.Inactive].includes(user.status as AccountStatus)
+    (params.uuid !== user.id && !maintainerRoles.includes(user.role)) ||
+    [AccountStatus.Inactive].includes(user.status)
   )
     return NextResponse.json(null, { status: StatusCodes.UNAUTHORIZED })
 

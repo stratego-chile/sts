@@ -1,30 +1,24 @@
-import { checkSession } from '@/lib/session'
+import Loading from '@/app/my/loading'
+import { getSessionCookie } from '@/lib/session'
 import { Users } from '@/models/users'
-import type { TUserSecurity } from '@/schemas/user'
+import dynamic from 'next/dynamic'
 import { cookies } from 'next/headers'
+import { Suspense } from 'react'
 
-const getUserSecuritySettings = async (): Promise<Unset<TUserSecurity>> => {
-  const user = await checkSession(cookies())
-
-  if (!user) return undefined
-
-  const foundUser = await Users.getUserById(user.id)
-
-  if (!foundUser) return undefined
-
-  return foundUser.settings.security
-}
+const SecurityOptions = dynamic(
+  () => import('@/components/settings/security/options'),
+)
 
 const SecuritySettingsPage = async () => {
-  const userSecuritySettings = await getUserSecuritySettings()
+  const user = await getSessionCookie(cookies())
+
+  const userSecuritySettings = await Users.getUserById(user!.id)
 
   return (
     <section className="flex flex-col flex-grow w-full gap-4">
-      <pre>
-        <code>
-          {JSON.stringify(Object.keys(userSecuritySettings), null, 2)}
-        </code>
-      </pre>
+      <Suspense fallback={<Loading />}>
+        <SecurityOptions settings={userSecuritySettings?.settings?.security} />
+      </Suspense>
     </section>
   )
 }

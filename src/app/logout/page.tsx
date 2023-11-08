@@ -1,17 +1,24 @@
-import { getSessionCookie } from '@/lib/session'
-import { cookies } from 'next/headers'
-import ClientLogout from '@/app/logout/(client)/logout'
+'use client'
 
-const ServerLogout = async () => {
-  const { __cookieConfig: cookieConfig, ...user } =
-    (await getSessionCookie(cookies())) ?? {}
+import { fetcher } from '@/lib/fetcher'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-  return cookieConfig ? (
-    <ClientLogout
-      user={user as Stratego.STS.User.CookieData}
-      config={cookieConfig}
-    />
-  ) : null
+const LogoutPage = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    fetcher('/api/session/logout', {
+      method: 'HEAD',
+    })
+      .then(() => {
+        localStorage.removeItem(process.env.SESSION_STORE_KEY)
+      })
+      .catch(() => router.replace('/'))
+      .finally(() => router.replace('/'))
+  }, [router])
+
+  return <p>Logging out...</p>
 }
 
-export default ServerLogout
+export default LogoutPage

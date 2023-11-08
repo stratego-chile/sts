@@ -12,7 +12,7 @@ const Spinner = ({ size, sizeUnit = 'px' }: SpinnerProps) => {
         'inline-flex rounded-full align-[-0.125em]',
         'border-4 border-solid border-current border-r-transparent',
         'animate-spin motion-reduce:animate-[spin_1.5s_linear_infinite]',
-        size === 'inline' ? 'h-full w-auto' : !size && 'h-8 w-8'
+        size === 'inline' ? 'h-full w-auto' : !size && 'h-8 w-8',
       )}
       role="status"
       style={{

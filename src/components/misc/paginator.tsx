@@ -1,8 +1,10 @@
 'use client'
 
+import { VisibilityMode } from '@/lib/enumerators'
+import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon'
+import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon'
 import classNames from 'classnames'
-import { useMemo, useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { Fragment, useMemo, useState } from 'react'
 
 type PaginationPositionX = 'left' | 'center' | 'right'
 
@@ -11,27 +13,33 @@ type PaginationPositionY = 'top' | 'bottom'
 type PaginationPosition = `${PaginationPositionY}-${PaginationPositionX}`
 
 type PaginatorProps = {
+  visibilityMode?: VisibilityMode
   items?: Array<React.ReactNode>
   itemsPerPage?: number
   defaultPage?: 'first' | 'last' | number
+  rootWrapperClassName?: string
   wrapperClassName?: string
+  headerContent?: React.ReactNode
   paginationControlPosition?: PaginationPosition
   paginationClassName?: string
   placeholder?: React.ReactNode
 }
 
-const Paginator: React.FC<PaginatorProps> = ({
+const Paginator = ({
+  visibilityMode = VisibilityMode.Columns,
   items = [],
   itemsPerPage = 5,
   defaultPage = 'first',
-  wrapperClassName = '',
+  rootWrapperClassName,
+  wrapperClassName,
+  headerContent = <Fragment />,
   paginationControlPosition = 'top-right',
-  paginationClassName = '',
+  paginationClassName,
   placeholder,
-}) => {
+}: PaginatorProps) => {
   const totalPages = useMemo(
     () => Math.ceil(items.length / itemsPerPage),
-    [items.length, itemsPerPage]
+    [items.length, itemsPerPage],
   )
 
   const [currentPage, setCurrentPage] = useState(
@@ -39,7 +47,7 @@ const Paginator: React.FC<PaginatorProps> = ({
       ? defaultPage
       : defaultPage === 'first'
       ? 1
-      : totalPages
+      : totalPages,
   )
 
   const paginationControls = useMemo(
@@ -51,7 +59,7 @@ const Paginator: React.FC<PaginatorProps> = ({
             paginationControlPosition.endsWith('left') && 'justify-start',
             paginationControlPosition.endsWith('center') && 'justify-center',
             paginationControlPosition.endsWith('right') && 'justify-end',
-            paginationClassName
+            paginationClassName,
           )}
         >
           <div className="inline-flex justify-center items-center gap-x-2">
@@ -83,12 +91,53 @@ const Paginator: React.FC<PaginatorProps> = ({
           </div>
         </div>
       ),
-    [currentPage, paginationClassName, paginationControlPosition, totalPages]
+    [currentPage, paginationClassName, paginationControlPosition, totalPages],
   )
 
-  return (
-    <div className="flex flex-col flex-grow gap-2 w-full">
+  return visibilityMode === VisibilityMode.Table ? (
+    <Fragment>
       {paginationControlPosition.startsWith('top') && paginationControls}
+
+      <div className={classNames('table table-flex', rootWrapperClassName)}>
+        <div className="table-header-group">
+          <div className="table-row [&>.table-cell]:p-2">{headerContent}</div>
+        </div>
+
+        <div className={classNames('table-row-group', wrapperClassName)}>
+          {items.length === 0 && placeholder}
+
+          {items.map((item, key) => {
+            const page = Math.ceil((key + 1) / itemsPerPage)
+
+            return (
+              <div
+                key={key}
+                className={classNames(
+                  'table-row [&>.table-cell]:p-2 transition-all duration-500',
+                  page === currentPage ? 'block' : 'hidden',
+                )}
+              >
+                {item}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {paginationControlPosition.startsWith('bottom') && paginationControls}
+    </Fragment>
+  ) : (
+    <div
+      className={classNames(
+        'flex flex-grow gap-2 w-full',
+        visibilityMode === VisibilityMode.Columns && 'flex-col',
+        visibilityMode === VisibilityMode.Rows && 'flex-row',
+        rootWrapperClassName,
+      )}
+    >
+      {paginationControlPosition.startsWith('top') && paginationControls}
+
+      {headerContent}
 
       <div className={wrapperClassName}>
         {items.length === 0 && placeholder}
@@ -99,9 +148,10 @@ const Paginator: React.FC<PaginatorProps> = ({
           return (
             <div
               key={key}
-              className={`${
-                page === currentPage ? 'block' : 'hidden'
-              } transition-all duration-500`}
+              className={classNames(
+                'transition-all duration-500',
+                page === currentPage ? 'block' : 'hidden',
+              )}
             >
               {item}
             </div>

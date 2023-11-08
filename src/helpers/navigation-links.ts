@@ -1,23 +1,27 @@
 import { SettingId } from '@/lib/enumerators'
-import {
-  ArrowLeftOnRectangleIcon,
-  BellAlertIcon,
-  DocumentMagnifyingGlassIcon,
-  FingerPrintIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/outline'
+import ArrowLeftOnRectangleIcon from '@heroicons/react/24/outline/ArrowLeftOnRectangleIcon'
+import BellAlertIcon from '@heroicons/react/24/outline/BellAlertIcon'
+import DocumentMagnifyingGlassIcon from '@heroicons/react/24/outline/DocumentMagnifyingGlassIcon'
+import FingerPrintIcon from '@heroicons/react/24/outline/FingerPrintIcon'
+import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
+import type { Merge, MergeExclusive } from 'type-fest'
 
-export const adminNavigationLinks = [
+export type NavigationLinkConfig = {
+  name: string
+  href: string
+}
+
+export const adminNavigationLinks: Array<NavigationLinkConfig> = [
   { name: 'Console', href: '/admin/console' },
   { name: 'Users', href: '/admin/users' },
   { name: 'Projects', href: '/admin/projects' },
   { name: 'Tickets', href: '/admin/tickets' },
 ]
 
-export const clientNavigationLinks = [
-  { name: 'Dashboard', href: '/account/dashboard' },
-  { name: 'Projects', href: '/account/projects' },
-  { name: 'Tickets', href: '/account/tickets' },
+export const clientNavigationLinks: Array<NavigationLinkConfig> = [
+  { name: 'Dashboard', href: '/my/dashboard' },
+  { name: 'Projects', href: '/my/projects' },
+  { name: 'Tickets', href: '/my/tickets' },
 ]
 
 export const settingsLinks: Array<{
@@ -25,8 +29,8 @@ export const settingsLinks: Array<{
   description: string
   href: string
   icon: React.ForwardRefExoticComponent<
-    Extend<
-      Extend<
+    Merge<
+      Merge<
         React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>,
         React.RefAttributes<SVGSVGElement>
       >,
@@ -62,9 +66,9 @@ export const settingsQuickActions: Array<
     {
       name: string
       icon: React.ForwardRefExoticComponent<
-        Extend<
+        Merge<
           Omit<React.SVGProps<SVGSVGElement>, 'ref'>,
-          Extend<
+          Merge<
             {
               title?: string | undefined
               titleId?: string | undefined
@@ -74,9 +78,10 @@ export const settingsQuickActions: Array<
         >
       >
     },
-    Exclusive<
+    MergeExclusive<
       {
         href: string
+        newTab?: boolean
       },
       {
         action: () => void
@@ -88,6 +93,7 @@ export const settingsQuickActions: Array<
     name: 'User guide',
     href: '/user-guide',
     icon: DocumentMagnifyingGlassIcon,
+    newTab: true,
   },
   {
     name: 'Logout',

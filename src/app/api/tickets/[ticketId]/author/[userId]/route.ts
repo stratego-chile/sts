@@ -1,5 +1,5 @@
-import { AccountStatus } from '@/lib/enumerators'
 import { Users } from '@/models/users'
+import { AccountStatus } from '@/schemas/user'
 import { StatusCodes } from 'http-status-codes'
 import { NextResponse } from 'next/server'
 
@@ -11,7 +11,7 @@ export const GET = async (
     params: {
       userId: string
     }
-  }
+  },
 ) => {
   const user = await Users.getUserById(params.userId as Stratego.STS.Utils.UUID)
 

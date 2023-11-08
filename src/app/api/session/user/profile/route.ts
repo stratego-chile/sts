@@ -1,6 +1,6 @@
 import { checkSession } from '@/lib/session'
 import { Users } from '@/models/users'
-import { userProfileSchema, type TUserProfile } from '@/schemas/user'
+import { UserProfileSchema, type TUserProfile } from '@/schemas/user'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
@@ -34,7 +34,7 @@ export const PATCH = async (request: NextRequest) => {
 
   const profileData: Assume<TUserProfile> = await request.json()
 
-  const isDataValid = !!userProfileSchema.safeParse(profileData).parsed
+  const isDataValid = !!UserProfileSchema.safeParse(profileData).parsed
 
   if (isDataValid) {
     const result = await Users.updateProfile(user.id, profileData)

@@ -20,11 +20,6 @@ declare type Flatten<T> = UnpackedArray<T>
 declare type Extend<T, U> = U extends T ? T : T & U
 
 /**
- * Merge two types
- */
-declare type Merge<T, U> = T & U
-
-/**
  * Construct a type from T using keys in the union K as required properties
  */
 declare type SelectiveRequired<T, K extends keyof T> = T & Required<Pick<T, K>>
@@ -62,7 +57,7 @@ declare type Filtered<T, K extends keyof T> = Record<K, T[K]> & {
 
 declare type Assumed<
   Original extends object,
-  Assumption extends Original
+  Assumption extends Original,
 > = Original & Partial<Omit<Assumption, keyof Original>>
 
 declare type Assume<Base, Expected = Base> = Expected extends Base
@@ -73,6 +68,9 @@ declare type Assume<Base, Expected = Base> = Expected extends Base
 
 declare type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
 
+/**
+ * @deprecated in favor of `type-fest` `MergeExclusive`
+ */
 declare type Exclusive<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
   : T | U
@@ -81,11 +79,15 @@ declare type Override<T, U> = T extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
   : T | U
 
+declare type OptionalReadonly<T> = T | Readonly<T>
+
 declare type Unset<T> = T | undefined
 
 declare type Nullable<T> = T | null
 
 declare type NullableUnset<T> = Nullable<Unset<T>>
+
+declare type Stringified<T extends object | Primitive> = `${T}`
 //#endregion
 
 //#region react components custom types

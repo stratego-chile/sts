@@ -1,4 +1,4 @@
-import { AccountRole } from '@/lib/enumerators'
+import { maintainerRoles } from '@/helpers/roles'
 import { checkSession } from '@/lib/session'
 import { Projects } from '@/models/projects'
 import { StatusCodes } from 'http-status-codes'
@@ -10,11 +10,11 @@ export const GET = async () => {
 
   if (!user) return NextResponse.json([], { status: StatusCodes.UNAUTHORIZED })
 
-  const isAdmin = [AccountRole.Admin, AccountRole.Auditor].includes(user.role)
+  const isAdmin = maintainerRoles.includes(user.role)
 
   return NextResponse.json(
     isAdmin
       ? await Projects.getAll()
-      : await Projects.getProjectsByOwnerId(user.id)
+      : await Projects.getProjectsByOwnerId(user.id),
   )
 }

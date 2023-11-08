@@ -1,7 +1,8 @@
 'use client'
 
 import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import CheckIcon from '@heroicons/react/24/outline/CheckIcon'
+import ChevronUpDownIcon from '@heroicons/react/24/outline/ChevronUpDownIcon'
 import classNames from 'classnames'
 import { Fragment, useMemo } from 'react'
 
@@ -11,35 +12,37 @@ type ListBoxOption<Value extends Primitive> = {
 }
 
 type ListBoxProps<PossibleValue extends Primitive> = {
+  className?: string
   value?: PossibleValue
   options: Array<ListBoxOption<PossibleValue>>
   onChange?: (option: PossibleValue) => void
 }
 
 const ListBox = <T extends Primitive>({
+  className,
   value: selectedOption,
   options,
   onChange,
 }: ListBoxProps<T>) => {
   const currentOption = useMemo(
     () => options.find((option) => option.value === selectedOption),
-    [options, selectedOption]
+    [options, selectedOption],
   )
 
   return (
     <Listbox
       value={currentOption?.value}
-      onChange={
-        (option) => option && onChange?.(option)
-        // setSelectedOption(options.find(($option) => $option.value === option))
-      }
+      onChange={(option) => option && onChange?.(option)}
     >
-      <div className="relative inline-flex">
+      <div className="relative">
         <Listbox.Button
-          className={classNames(
-            'relative w-full cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left sm:text-sm',
-            'hover:bg-gray-200 hover:bg-opacity-60 transition-colors duration-200 ease-in-out'
-          )}
+          className={
+            className ??
+            classNames(
+              'relative w-full cursor-pointer rounded py-2 pl-3 pr-10 text-left focus:outline-none shadow bg-white focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm',
+              'hover:bg-gray-200 hover:bg-opacity-60 transition-colors duration-200 ease-in-out',
+            )
+          }
         >
           <span className="block truncate">
             {currentOption?.label ?? String(currentOption?.value)}
@@ -59,15 +62,19 @@ const ListBox = <T extends Primitive>({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute mt-1 z-30 max-h-60 w-auto overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Listbox.Options
+            className={classNames(
+              'absolute mt-1 z-30 max-h-60 w-auto overflow-auto py-1 rounded',
+              'bg-white text-xs shadow ring-1 ring-black ring-opacity-5 focus:outline-none',
+            )}
+          >
             {options.map((option, optionIndex) => (
               <Listbox.Option
                 key={optionIndex}
-                className={({ active, selected }) =>
+                className={({ active }) =>
                   classNames(
                     'relative cursor-default select-none p-2',
                     active ? 'bg-blue-100 text-blue-900' : 'text-gray-900',
-                    selected && 'bg-blue-600 text-white'
                   )
                 }
                 value={option.value}
@@ -75,15 +82,15 @@ const ListBox = <T extends Primitive>({
                 {({ selected }) => (
                   <span className="flex justify-start items-center gap-2 mr-4">
                     {selected && (
-                      <span className="flex items-center p-0.5 rounded-full text-white bg-blue-400">
+                      <span className="inline-flex items-center p-0.5 text-blue-400">
                         <CheckIcon className="h-4 w-4" aria-hidden="true" />
                       </span>
                     )}
 
                     <span
                       className={classNames(
-                        'block truncate',
-                        !selected && 'pl-7'
+                        'block truncate text-xs',
+                        !selected && 'pl-7',
                       )}
                     >
                       {option.label ?? String(option.value)}
