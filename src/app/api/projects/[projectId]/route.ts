@@ -22,7 +22,7 @@ export const GET = async (
 
   const searchForAllProjects = !!maintainerRoles.includes(user.role)
 
-  let project: Unset<
+  let project: PossiblyDefined<
     | Awaited<ReturnType<(typeof Projects)['getProjectById']>>
     | Awaited<ReturnType<(typeof Projects)['getOwnedProjectById']>>
   >

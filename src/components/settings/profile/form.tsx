@@ -35,7 +35,7 @@ type SubmissionResult = 'error' | 'success'
 
 type ProfileFormProps = {
   profile: Extend<
-    Unset<TUserProfile>,
+    PossiblyDefined<TUserProfile>,
     {
       email: string
     }
@@ -96,7 +96,7 @@ const ProfileForm = ({
 
           const result: Assume<
             TUserProfile,
-            Unset<TUserProfile>
+            PossiblyDefined<TUserProfile>
           > = await updateResponse.json()
 
           if (result) {

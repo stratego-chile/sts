@@ -129,7 +129,7 @@ export function columnsFactory({
     {
       header: 'Access attempts',
       accessorKey: 'accessAttempts',
-      cell: (props) => props.getValue<Unset<[]>>()?.length ?? 0,
+      cell: (props) => props.getValue<PossiblyDefined<[]>>()?.length ?? 0,
       footer: (props) => props.column.id,
     },
   ]

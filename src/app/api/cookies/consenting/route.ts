@@ -8,7 +8,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 type CookiesConsentingConfig = Record<CookiesConsenting, boolean>
 
 export const POST = async (request: NextRequest) => {
-  const consenting = (await request.json()) as Unset<CookiesConsentingConfig>
+  const consenting =
+    (await request.json()) as PossiblyDefined<CookiesConsentingConfig>
 
   if (!consenting)
     return NextResponse.json(null, { status: StatusCodes.BAD_REQUEST })

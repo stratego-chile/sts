@@ -81,11 +81,11 @@ declare type Override<T, U> = T extends object
 
 declare type OptionalReadonly<T> = T | Readonly<T>
 
-declare type Unset<T> = T | undefined
+declare type PossiblyDefined<T> = T | undefined
 
 declare type Nullable<T> = T | null
 
-declare type NullableUnset<T> = Nullable<Unset<T>>
+declare type UndefinedNullable<T> = Nullable<PossiblyDefined<T>>
 
 declare type Stringified<T extends object | Primitive> = `${T}`
 //#endregion

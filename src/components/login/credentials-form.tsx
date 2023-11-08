@@ -100,7 +100,7 @@ const CredentialsForm = ({ returnUrl }: CredentialsFormProps) => {
         const { visitorId, version, confidence } = browserFingerprint
 
         const geolocation = await (async () =>
-          new Promise<Unset<GeolocationPosition>>((resolve) => {
+          new Promise<PossiblyDefined<GeolocationPosition>>((resolve) => {
             navigator.geolocation.getCurrentPosition(
               (coordinates) => resolve(coordinates),
               () => resolve(undefined),

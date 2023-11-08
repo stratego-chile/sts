@@ -61,7 +61,7 @@ export class Users {
 
   static async getUserIconById(
     id: Stratego.STS.Utils.UUID,
-  ): Promise<NullableUnset<TUserProfile['icon']>> {
+  ): Promise<UndefinedNullable<TUserProfile['icon']>> {
     const user = await Users.getUserById(id)
 
     if (user) return user.settings.profile.icon
@@ -125,8 +125,8 @@ export class Users {
   static async updateProfile(
     userId: Stratego.STS.Utils.UUID,
     profile: TUserProfile,
-  ): Promise<Unset<TUserProfile>> {
-    let result: Unset<TUserProfile>
+  ): Promise<PossiblyDefined<TUserProfile>> {
+    let result: PossiblyDefined<TUserProfile>
 
     const user = await Users.getUserById(userId)
 
@@ -160,8 +160,8 @@ export class Users {
   static async updateSecurity(
     userId: Stratego.STS.Utils.UUID,
     security: TUserSecurity,
-  ): Promise<Unset<TUserSecurity>> {
-    let result: Unset<TUserSecurity>
+  ): Promise<PossiblyDefined<TUserSecurity>> {
+    let result: PossiblyDefined<TUserSecurity>
 
     const user = await Users.getUserById(userId)
 
@@ -267,7 +267,7 @@ export class Users {
   static async validateTOTPToken(
     userId: Stratego.STS.Utils.UUID,
     token: string,
-  ): Promise<[isValid: boolean, currentRef: Unset<string>]> {
+  ): Promise<[isValid: boolean, currentRef: PossiblyDefined<string>]> {
     const currentPartialConfig = await Users.getTOTP(userId)
 
     if (!currentPartialConfig) return [false, undefined]

@@ -111,7 +111,7 @@ declare global {
 }
 
 function getDragSelection(event: DragEvent): Range | null | undefined {
-  let range: NullableUnset<Range>
+  let range: UndefinedNullable<Range>
 
   const target = event.target as null | Element | Document
   const targetWindow =

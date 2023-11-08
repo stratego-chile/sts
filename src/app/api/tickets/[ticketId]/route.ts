@@ -26,7 +26,7 @@ export const GET = async (
   )
     searchForAllTickets = true
 
-  let ticket: Unset<
+  let ticket: PossiblyDefined<
     | Awaited<ReturnType<(typeof Tickets)['getTicket']>>
     | Awaited<ReturnType<(typeof Tickets)['getOwnedTicket']>>
   >

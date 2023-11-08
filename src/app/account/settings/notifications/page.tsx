@@ -11,7 +11,7 @@ const NotificationsForm = dynamic(
 )
 
 const getUserNotificationSettings = async (): Promise<
-  Unset<TUserNotifications>
+  PossiblyDefined<TUserNotifications>
 > => {
   const user = await checkSession(cookies())
 

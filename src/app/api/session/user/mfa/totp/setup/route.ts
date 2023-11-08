@@ -71,7 +71,7 @@ export const POST = async (request: NextRequest) => {
   if (!user)
     return NextResponse.json(null, { status: StatusCodes.UNAUTHORIZED })
 
-  const { token }: { token: Unset<string> } = await request.json()
+  const { token }: { token: PossiblyDefined<string> } = await request.json()
 
   if (!token)
     return NextResponse.json(null, { status: StatusCodes.BAD_REQUEST })
