@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "5.2.6",
-    "@fingerprintjs/fingerprintjs": "4.1.0",
+    "@fingerprintjs/fingerprintjs": "4.2.0",
     "@headlessui-float/react": "0.12.0",
     "@headlessui/react": "1.7.17",
     "@heroicons/react": "2.0.18",
@@ -39,11 +39,11 @@
     "@otplib/preset-default": "12.0.1",
     "@powership/schema": "2.3.0",
     "@stdlib/string": "0.1.1",
-    "@tailwindcss/forms": "0.5.6",
+    "@tailwindcss/forms": "0.5.7",
     "@tanstack/react-table": "8.10.7",
     "@vercel/analytics": "1.1.1",
-    "antd": "5.11.0",
-    "antd-img-crop": "4.15.0",
+    "antd": "5.11.1",
+    "antd-img-crop": "4.17.0",
     "chalk": "^5.3.0",
     "chart.js": "4.4.0",
     "chroma-js": "2.4.2",
@@ -61,7 +61,7 @@
     "lodash.isplainobject": "4.0.6",
     "lodash.merge": "4.6.2",
     "mongodb": "6.2.0",
-    "next": "14.0.1",
+    "next": "14.0.2",
     "react": "18.2.0",
     "react-bootstrap-icons": "1.10.3",
     "react-chartjs-2": "5.2.0",
@@ -73,14 +73,14 @@
     "react-use": "17.4.0",
     "salted-sha512": "1.0.6",
     "swr": "2.2.4",
-    "type-fest": "4.6.0",
+    "type-fest": "4.7.1",
     "use-delayed-state": "1.2.0",
     "uuid": "9.0.1",
     "yup": "1.3.2"
   },
   "devDependencies": {
     "@cspell/dict-es-es": "2.3.0",
-    "@next/bundle-analyzer": "14.0.1",
+    "@next/bundle-analyzer": "14.0.2",
     "@types/chroma-js": "2.4.3",
     "@types/file-size": "1.0.3",
     "@types/is-base64": "1.1.3",
@@ -100,7 +100,7 @@
     "eslint": "8.53.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.1.0",
-    "eslint-config-next": "14.0.1",
+    "eslint-config-next": "14.0.2",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-anti-trojan-source": "1.1.1",
     "eslint-plugin-deprecation": "2.0.0",
@@ -112,7 +112,7 @@
     "local-ssl-proxy": "2.0.5",
     "postcss": "8.4.31",
     "postcss-import": "15.1.0",
-    "prettier": "3.0.3",
+    "prettier": "3.1.0",
     "sass": "1.69.5",
     "sass-loader": "13.3.2",
     "tailwindcss": "3.3.5",
@@ -125,9 +125,9 @@
       "react": "18.2.0"
     }
   },
-  "packageManager": "pnpm@8.10.2",
+  "packageManager": "pnpm@8.10.3",
   "volta": {
     "node": "20.9.0",
-    "pnpm": "8.10.2"
+    "pnpm": "8.10.3"
   }
 }
