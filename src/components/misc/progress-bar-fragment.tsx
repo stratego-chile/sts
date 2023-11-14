@@ -20,11 +20,11 @@ type ProgressBarFragmentProps<T extends ProgressBarFragmentType> = Extend<
   T extends 'a'
     ? { href?: string; onClick?: never }
     : T extends 'button'
-    ? { onClick?: () => void; href?: never }
-    : {
-        href?: never
-        onClick?: never
-      }
+      ? { onClick?: () => void; href?: never }
+      : {
+          href?: never
+          onClick?: never
+        }
 >
 
 const ProgressBarFragment = <T extends ProgressBarFragmentType>({

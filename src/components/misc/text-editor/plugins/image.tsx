@@ -118,8 +118,8 @@ function getDragSelection(event: DragEvent): Range | null | undefined {
     target == null
       ? null
       : target.nodeType === 9
-      ? (target as Document).defaultView
-      : (target as Element).ownerDocument.defaultView
+        ? (target as Document).defaultView
+        : (target as Element).ownerDocument.defaultView
   const domSelection = getDOMSelection(targetWindow)
 
   // eslint-disable-next-line deprecation/deprecation

@@ -54,8 +54,8 @@ const SessionHeader = () => {
       typeof isMaintainer === 'undefined'
         ? []
         : isMaintainer
-        ? adminNavigationLinks
-        : clientNavigationLinks,
+          ? adminNavigationLinks
+          : clientNavigationLinks,
     [isMaintainer],
   )
 

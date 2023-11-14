@@ -46,8 +46,8 @@ const Paginator = ({
     typeof defaultPage === 'number'
       ? defaultPage
       : defaultPage === 'first'
-      ? 1
-      : totalPages,
+        ? 1
+        : totalPages,
   )
 
   const paginationControls = useMemo(
