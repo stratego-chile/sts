@@ -125,7 +125,7 @@
       "react": "18.2.0"
     }
   },
-  "packageManager": "pnpm@8.10.3",
+  "packageManager": "pnpm@8.10.5",
   "volta": {
     "node": "20.9.0",
     "pnpm": "8.10.5"
