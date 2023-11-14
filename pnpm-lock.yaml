@@ -54,8 +54,8 @@ dependencies:
     specifier: 12.0.1
     version: 12.0.1
   '@powership/schema':
-    specifier: 2.3.0
-    version: 2.3.0
+    specifier: 3.1.7
+    version: 3.1.7
   '@stdlib/string':
     specifier: 0.1.1
     version: 0.1.1
@@ -1360,16 +1360,16 @@ packages:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
     dev: true
 
-  /@powership/schema@2.3.0:
-    resolution: {integrity: sha512-FdVI3ntH1+vbG+N8soXcexxX4WHVyr0n0DV4Y78wiMMz2kxz3LUH+Pbfq5AQDgNNnCna3sFu+AA2rtIDPa5t+g==}
+  /@powership/schema@3.1.7:
+    resolution: {integrity: sha512-B9k+VQQKlZP5Ni0pIWyq7R3daG7Xd2eTH0M0OeHnIrSELjdZo277LOw4RX1Wq0dCBs5nUFZcTcarv8ontw/f8g==}
     dependencies:
-      '@powership/utils': 2.3.0
+      '@powership/utils': 3.1.7
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@powership/utils@2.3.0:
-    resolution: {integrity: sha512-6SjdQ9TPZ22UdXyGDyR/7LV+8W1u/LKhXYT6r5/Lcvws7R2fmmx9Xk1Fms1jfDPmN8NEZ9r9zIcfluVqQy+qlg==}
+  /@powership/utils@3.1.7:
+    resolution: {integrity: sha512-b2Jujaz0YPCxFnJBmZWc6D4FauAvxNe23TIGBrIvtnzf9TJUCLMLfnQlcUS5/B8uCWMy+fFgd6bcxqchkjNu0Q==}
     dependencies:
       aggio: 0.2.0
       awesome-phonenumber: 4.1.0
@@ -5413,7 +5413,6 @@ packages:
       chalk: 2.4.2
       diff-match-patch: 1.0.5
     dev: false
-    bundledDependencies: []
 
   /jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}

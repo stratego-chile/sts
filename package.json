@@ -37,7 +37,7 @@
     "@lexical/utils": "0.12.2",
     "@monaco-editor/react": "4.6.0",
     "@otplib/preset-default": "12.0.1",
-    "@powership/schema": "2.3.0",
+    "@powership/schema": "3.1.7",
     "@stdlib/string": "0.1.1",
     "@tailwindcss/forms": "0.5.7",
     "@tanstack/react-table": "8.10.7",
