@@ -1,18 +1,30 @@
 import { getPageTitle } from '@/lib/format'
+import { checkSession } from '@/lib/session'
+import { RedirectType } from 'next/dist/client/components/redirect'
 import dynamic from 'next/dynamic'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { Fragment, Suspense } from 'react'
 
 const Header = dynamic(() => import('@/components/layout/default-header'))
 
 export const metadata = {
   title: getPageTitle('Home'),
-  description: 'Welcome to Stratego Support Ticket System',
+  description: 'Welcome to the Stratego Support Ticket System',
 }
 
-const Home = () => {
+const Home = async () => {
+  const user = await checkSession(cookies())
+
+  if (user) redirect('/login', RedirectType.replace)
+
   return (
-    <>
-      <Header />
+    <Fragment>
+      <Suspense>
+        <Header />
+      </Suspense>
+
       <div className="flex flex-grow items-center">
         <div className="max-w-7xl w-full mx-auto">
           <div className="p-6 space-y-8">
@@ -35,7 +47,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </>
+    </Fragment>
   )
 }
 

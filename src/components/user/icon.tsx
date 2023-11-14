@@ -1,5 +1,4 @@
-import { IconType } from '@/lib/enumerators'
-import type { TUserProfileIcon } from '@/schemas/user'
+import { IconType, type TUserProfileIcon } from '@/schemas/user'
 import dynamic from 'next/dynamic'
 
 const UserImage = dynamic(() => import('@/components/user/image-icon'))

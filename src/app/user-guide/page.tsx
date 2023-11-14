@@ -1,3 +1,9 @@
+import { getPageTitle } from '@/lib/format'
+
+export const metadata = {
+  title: getPageTitle('User Guide'),
+}
+
 const UserGuidePage = () => {
   return (
     <div>

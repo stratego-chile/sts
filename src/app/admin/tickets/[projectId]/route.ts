@@ -8,5 +8,5 @@ export const GET = (
     params: {
       projectId: Stratego.STS.Utils.UUID
     }
-  }
+  },
 ) => redirect(`/admin/projects/${params.projectId}/tickets`)

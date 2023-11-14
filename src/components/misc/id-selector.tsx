@@ -1,33 +1,61 @@
-import { ClipboardDocumentIcon } from '@heroicons/react/24/outline'
+'use client'
+
+import ClipboardDocumentIcon from '@heroicons/react/24/outline/ClipboardDocumentIcon'
 import classNames from 'classnames'
 
 type IdSelectorProps = {
-  label: string
+  label?: string
   id: string
+  className?: string
+  showButton?: boolean
+  labelTerminationChar?: string
 }
 
-const IdSelector: React.FC<IdSelectorProps> = ({ label, id }) => {
+const IdSelector = ({
+  label,
+  id,
+  className,
+  showButton = true,
+  labelTerminationChar = ':',
+}: IdSelectorProps) => {
   return (
-    <span className="flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-2 text-sm text-gray-500">
-      <span>{label}:</span>
+    <span className="flex flex-row flex-wrap lg:items-center gap-2 text-sm font-bold text-gray-500">
+      {label && (
+        <span>
+          {label}
+          {labelTerminationChar && labelTerminationChar}
+        </span>
+      )}
 
-      <span className="inline-flex justify-between items-center bg-gray-200 text-gray-500 rounded">
-        <span className="px-2 select-all">{id}</span>
-
-        <button
+      <span
+        className={classNames(
+          'inline-flex py-1 w-fit lg:w-auto overflow-hidden rounded',
+          'divide-x divide-gray-300 bg-gray-200 text-gray-500',
+        )}
+      >
+        <span
           className={classNames(
-            'inline px-1.5 py-1 rounded-r border-l border-gray-300',
-            'hover:bg-gray-600 hover:text-gray-50',
-            'transition duration-200 ease-in-out'
+            'inline-flex px-2 select-all text-xs items-center',
+            className,
           )}
-          onClick={() =>
-            navigator?.clipboard?.writeText && navigator.clipboard.writeText(id)
-          }
         >
-          <span>
-            <ClipboardDocumentIcon className="h-4 w-4" />
-          </span>
-        </button>
+          {id}
+        </span>
+
+        {showButton && (
+          <button
+            className={classNames(
+              'inline-flex px-1.5 -my-1 items-center',
+              'hover:bg-gray-600 hover:text-gray-50',
+              'transition duration-200 ease-in-out',
+            )}
+            role="button"
+            type="button"
+            onClick={() => navigator?.clipboard?.writeText?.(id)}
+          >
+            <ClipboardDocumentIcon className="h-4 w-4" aria-hidden="true" />
+          </button>
+        )}
       </span>
     </span>
   )

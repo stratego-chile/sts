@@ -39,7 +39,7 @@ const ProgressBarFragment = <T extends ProgressBarFragmentType>({
     () => ({
       className: classNames(
         'inline-flex ring-2 ring-white rounded h-full',
-        (href || !!onClick) && 'cursor-pointer'
+        (href || !!onClick) && 'cursor-pointer',
       ),
       style: {
         backgroundColor: color,
@@ -48,7 +48,7 @@ const ProgressBarFragment = <T extends ProgressBarFragmentType>({
       'aria-label': label,
       onClick,
     }),
-    [color, href, label, onClick, ratio]
+    [color, href, label, onClick, ratio],
   )
 
   return fragmentType === 'a' ? (

@@ -20,7 +20,7 @@ const CancelButtonPlugin = ({
       onClick={() => {
         if (initialState)
           editor.setEditorState(
-            editor.parseEditorState(JSON.stringify(initialState))
+            editor.parseEditorState(JSON.stringify(initialState)),
           )
         onCancel?.()
       }}

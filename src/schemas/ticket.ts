@@ -1,10 +1,34 @@
-import { TicketStatus } from '@/lib/enumerators'
+import { createSchema, type Infer } from '@powership/schema'
 import type { SerializedEditorState, SerializedLexicalNode } from 'lexical'
-import { createSchema, type Infer } from 'solarwind'
+import type { Merge } from 'type-fest'
 
-export const ticketDescriptorSchema = createSchema({
+export enum TicketResponsibleType {
+  Creator = 'creator',
+  Supporter = 'supporter',
+  Auditor = 'auditor',
+}
+
+export enum TicketStatus {
+  Draft = 'draft',
+  Open = 'open',
+  Closed = 'closed',
+  Resolved = 'resolved',
+}
+
+export enum TicketPriority {
+  Low = 'low',
+  Medium = 'medium',
+  High = 'high',
+  Critical = 'critical',
+}
+
+export const TicketVersionSchema = createSchema({
   title: 'string',
   description: 'record?',
+  priority: {
+    enum: Object.values(TicketPriority),
+    optional: true,
+  },
   status: {
     enum: Object.values(TicketStatus),
   },
@@ -14,11 +38,16 @@ export const ticketDescriptorSchema = createSchema({
   createdAt: 'int',
 } as const)
 
-export type TTicketDescriptor = Infer<typeof ticketDescriptorSchema>
+export type TTicketVersion = Merge<
+  Infer<typeof TicketVersionSchema>,
+  {
+    description?: Stringified<SerializedEditorState<SerializedLexicalNode>>
+  }
+>
 
-export const ticketCommentSchema = createSchema({
+export const TicketCommentSchema = createSchema({
   id: 'ID',
-  content: 'record?',
+  content: 'string',
   author: 'string',
   /**
    * Unix timestamp
@@ -26,38 +55,63 @@ export const ticketCommentSchema = createSchema({
   createdAt: 'int',
 } as const)
 
-export type TTicketComment = Infer<typeof ticketCommentSchema>
+export type TTicketComment = Merge<
+  Infer<typeof TicketCommentSchema>,
+  {
+    content?: Stringified<SerializedEditorState<SerializedLexicalNode>>
+  }
+>
 
-export const ticketSchema = createSchema({
+export const TicketResponsibleSchema = createSchema({
+  id: 'string',
+  type: {
+    enum: Object.values(TicketResponsibleType),
+  },
+} as const)
+
+export type TTicketResponsible = Infer<typeof TicketResponsibleSchema>
+
+export const TicketSchema = createSchema({
   id: 'ID',
+  /**
+   * Users logically responsible for the ticket.
+   *
+   * This array contains the creator, supporters and auditors of the ticket.
+   */
+  responsibles: {
+    type: TicketResponsibleSchema,
+    list: true,
+  },
   versions: {
-    type: ticketDescriptorSchema,
+    type: TicketVersionSchema,
     list: true,
   },
   comments: {
-    type: ticketCommentSchema,
+    type: TicketCommentSchema,
     list: true,
   },
 } as const)
 
 export type TTicket<
-  T extends Infer<typeof ticketSchema> = Infer<typeof ticketSchema>
-> = Extend<
-  Omit<T, 'versions' | 'comments'>,
+  T extends Infer<typeof TicketSchema> = Infer<typeof TicketSchema>,
+> = Merge<
+  T,
   {
     versions: Array<
-      Extend<
-        Omit<TTicketDescriptor, 'description'>,
+      Merge<
+        TTicketVersion,
         {
-          description?: SerializedEditorState<SerializedLexicalNode>
+          description?: Stringified<
+            SerializedEditorState<SerializedLexicalNode>
+          >
         }
       >
     >
     comments: Array<
-      Extend<
-        Omit<TTicketComment, 'content'>,
+      Merge<
+        TTicketComment,
         {
-          content?: SerializedEditorState<SerializedLexicalNode>
+          content?: Stringified<SerializedEditorState<SerializedLexicalNode>>
         }
       >
     >

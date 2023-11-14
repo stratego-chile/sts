@@ -1,12 +1,18 @@
+import type { StatFilter } from '@/lib/enumerators'
+import type { ProjectStatus } from '@/schemas/project'
+import type { TicketStatus } from '@/schemas/ticket'
+import type { AccountRole, AccountStatus, IconType } from '@/schemas/user'
 import type { MongoClient } from 'mongodb'
-import type { AccountRole, AccountStatus, IconType } from '@/lib/enumerators'
 
 export {}
 
 declare global {
   /**
    * @server-side-only
-   * This allows the client to be reused across calls to the function.
+   *
+   * @development-only
+   *
+   * This allows the Mongo client to be reused across API calls.
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined
@@ -22,15 +28,16 @@ declare global {
         email: Auth.Email
         role: AccountRole
         status: AccountStatus
-        iconType: IconType
-        alias?: string
       }
 
       /**
        * User data cached in LocalStorage
        */
       export interface StoreData {
-        icon?: string
+        icon?: {
+          type: IconType
+          value: string
+        }
       }
     }
 
@@ -42,6 +49,10 @@ declare global {
       export type Credentials = {
         email: Email
         password: HashedPassword
+      }
+
+      export type Login = Credentials & {
+        remember?: boolean
       }
 
       export type Response<T extends boolean> = Extend<
@@ -59,18 +70,16 @@ declare global {
     }
 
     export module KPI {
-      export type Type = 'project' | 'ticket'
+      export type Type = 'project' | 'ticket' | 'ticketsByProject'
 
-      export type Projects = {
-        active: number
-        closed: number
+      export type Filters = {
+        [StatFilter.ProjectDate]?: [from: number, to: number]
+        [StatFilter.TicketDate]?: [from: number, to: number]
       }
 
-      export type Tickets = {
-        open: number
-        closed: number
-        resolved: number
-      }
+      export type Projects = Record<ProjectStatus, number>
+
+      export type Tickets = Record<TicketStatus, number>
 
       export type TicketsByProject = {
         id: string
@@ -85,8 +94,11 @@ declare global {
       }
     }
 
-    export namespace Utils {
-      export type UUID = `${string}-${string}-${string}-${string}-${string}`
+    export module Utils {
+      /**
+       * A UUID v4 string
+       */
+      export type UUID = `${string}-${string}-4${string}-${string}-${string}`
     }
   }
 }

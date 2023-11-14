@@ -1,12 +1,12 @@
 'use client'
 
 import { Dialog } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import Image from 'next/image'
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
 
-const DefaultHeader: React.FC<WithoutProps> = () => {
+const DefaultHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (

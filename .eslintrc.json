@@ -1,6 +1,10 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "anti-trojan-source", "deprecation"],
+  "plugins": [
+    "@typescript-eslint",
+    "anti-trojan-source",
+    "deprecation"
+  ],
   "extends": [
     "next/core-web-vitals",
     "airbnb-typescript",
@@ -8,12 +12,16 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "prettier/prettier": ["warn"],
+    "prettier/prettier": [
+      "warn"
+    ],
     "react/jsx-fragments": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/object-curly-spacing": "off",
     "@typescript-eslint/return-await": "off",
-    "react/jsx-filename-extension": [0],
+    "react/jsx-filename-extension": [
+      0
+    ],
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
     "block-scoped-var": "error",
@@ -23,10 +31,18 @@
   },
   "overrides": [
     {
-      "files": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.js", "./src/**/*.jsx", "./types/*.d.ts"],
+      "files": [
+        "./src/**/*.ts",
+        "./src/**/*.tsx",
+        "./src/**/*.js",
+        "./src/**/*.jsx",
+        "./types/**/*.d.ts"
+      ],
       "parserOptions": {
         "ecmaVersion": 12,
-        "project": ["./tsconfig.json"]
+        "project": [
+          "./tsconfig.json"
+        ]
       }
     }
   ]

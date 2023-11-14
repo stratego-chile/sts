@@ -13,6 +13,7 @@ import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { TRANSFORMERS } from '@lexical/markdown'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
+import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import {
   LexicalComposer,
   type InitialConfigType,
@@ -45,23 +46,50 @@ type EditorProps = {
   editable?: boolean
   theme?: EditorThemeClasses
   forceCancellation?: boolean
+  showCancelButton?: boolean
+  cleanAfterSubmit?: boolean
   onCancel?: () => void
   onContentSubmit?: (
-    content?: SerializedEditorState<SerializedLexicalNode>
+    content?: SerializedEditorState<SerializedLexicalNode>,
   ) => void
 }
 
-const Editor: React.FC<EditorProps> = ({
+const URL_MATCHER =
+  /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+
+const MATCHERS = [
+  (text: string) => {
+    const match = URL_MATCHER.exec(text)
+
+    if (match === null) {
+      return null
+    }
+
+    const fullMatch = match[0]
+
+    return {
+      index: match.index,
+      length: fullMatch.length,
+      text: fullMatch,
+      url: fullMatch.startsWith('http') ? fullMatch : `https://${fullMatch}`,
+      attributes: { rel: 'noreferrer', target: '_blank' },
+    }
+  },
+]
+
+const Editor = ({
   namespace,
   preset,
   value,
   placeholder = <Fragment />,
   editable = false,
   forceCancellation = false,
+  showCancelButton = true,
+  cleanAfterSubmit = false,
   theme,
   onCancel,
   onContentSubmit,
-}) => {
+}: EditorProps) => {
   const initialState = useMemo(() => preset, [preset])
 
   const [editorState, setEditorState] = useState<
@@ -89,16 +117,13 @@ const Editor: React.FC<EditorProps> = ({
       theme: {
         ...theme,
         ...EditorTheme,
-        root: classNames(
-          'rounded p-4 outline-1 outline-gray-200 shadow-inner bg-white',
-          theme?.root
-        ),
+        root: classNames('rounded p-4 shadow-inner bg-white', theme?.root),
       },
       onError: (error) => {
         throw error
       },
     }),
-    [namespace, editable, initialState, theme]
+    [namespace, editable, initialState, theme],
   )
 
   const onChange = useCallback((state: EditorState) => {
@@ -115,7 +140,7 @@ const Editor: React.FC<EditorProps> = ({
             contentEditable={
               <ContentEditable
                 className="editor-input"
-                contentEditable={String(!!editable) as `${boolean}`}
+                contentEditable="inherit"
               />
             }
             placeholder={placeholder}
@@ -132,6 +157,8 @@ const Editor: React.FC<EditorProps> = ({
 
           <LinkPlugin />
 
+          <AutoLinkPlugin matchers={MATCHERS} />
+
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
 
           <UpdateContentPlugin content={value} />
@@ -139,24 +166,33 @@ const Editor: React.FC<EditorProps> = ({
           <ToggleEnablePlugin editable={editable} />
 
           <CodeHighlightPlugin />
+
+          {/* TODO: integrate drag & drop image insertion and upload modal */}
+          {/* <ImagePlugin /> */}
         </div>
 
         {editable && (
           <div className="flex justify-end gap-2 py-2">
-            <CancelButtonPlugin
-              show={forceCancellation || !isEqual(initialState, editorState)}
-              initialState={initialState}
-              onCancel={() => {
-                onCancel?.()
-              }}
-            />
+            {showCancelButton && (
+              <CancelButtonPlugin
+                show={forceCancellation || !isEqual(initialState, editorState)}
+                initialState={initialState}
+                onCancel={() => {
+                  onCancel?.()
+                }}
+              />
+            )}
 
             {!isEqual(initialState, editorState) && (
               <button
                 type="button"
                 rel="button"
-                className="px-2 py-1 rounded bg-white shadow hover:text-gray-50 hover:bg-gray-800"
-                onClick={() => editorState && onContentSubmit?.(editorState)}
+                className="px-2 py-1 rounded text-white bg-blue-600 hover:bg-blue-500"
+                onClick={() => {
+                  if (editorState) onContentSubmit?.(editorState)
+
+                  if (cleanAfterSubmit) setEditorState(undefined)
+                }}
               >
                 Submit
               </button>
