@@ -118,7 +118,7 @@
     "tailwindcss": "3.3.5",
     "ts-node": "10.9.1",
     "typescript": "5.2.2",
-    "webpack": "5.89.0"
+    "webpack": "5.94.0"
   },
   "overrides": {
     "use-delayed-state": {
