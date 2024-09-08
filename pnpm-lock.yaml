@@ -162,8 +162,8 @@ dependencies:
     specifier: 2.2.4
     version: 2.2.4(react@18.2.0)
   type-fest:
-    specifier: 4.7.1
-    version: 4.7.1
+    specifier: 4.26.1
+    version: 4.26.1
   use-delayed-state:
     specifier: 1.2.0
     version: 1.2.0(react@18.2.0)
@@ -8104,8 +8104,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: false
 
-  /type-fest@4.7.1:
-    resolution: {integrity: sha512-iWr8RUmzAJRfhZugX9O7nZE6pCxDU8CZ3QxsLuTnGcBLJpCaP2ll3s4eMTBoFnU/CeXY/5rfQSuAEsTGJO4y8A==}
+  /type-fest@4.26.1:
+    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
     engines: {node: '>=16'}
     dev: false
 
